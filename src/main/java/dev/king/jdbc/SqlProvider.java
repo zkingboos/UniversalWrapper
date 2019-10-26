@@ -1,6 +1,8 @@
 package dev.king.jdbc;
 
 import dev.king.jdbc.functional.KFunction;
+import org.apache.commons.dbcp2.PoolableConnection;
+import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -35,11 +37,16 @@ public class SqlProvider extends QueryPool {
     public <K> Optional<K> query(String query, KFunction<ResultSet, K> function, Object... objects) {
         try {
             Connection connection = dataSource.getConnection();
+
+            //create stm
             PreparedStatement ps = connection.prepareStatement(query);
             syncObjects(ps, objects);
+
             ResultSet set = ps.executeQuery();
-            K result = function.apply(set);
-            set.close(); ps.close();
+            K result = set != null && set.next() ? function.apply(set) : null;
+
+            //close the connections
+            set.close(); ps.close(); connection.close();
             return Optional.ofNullable(result);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,15 +55,19 @@ public class SqlProvider extends QueryPool {
     }
 
     @Override
-    public void update(String query, Object... objects) {
+    public int update(String query, Object... objects) {
         try {
             Connection connection = dataSource.getConnection();
             PreparedStatement ps = connection.prepareCall(query);
             syncObjects(ps, objects);
-            ps.executeUpdate();
-            ps.close();
+            int result = ps.executeUpdate();
+
+            //close connections
+            ps.close();connection.close();
+            return result;
         }catch (Exception e){
             e.printStackTrace();
+            return -1;
         }
     }
 
@@ -65,5 +76,13 @@ public class SqlProvider extends QueryPool {
         for (int i = 1; iterator.hasNext(); i++) {
             ps.setObject(i, iterator.next());
         }
+    }
+
+    private void status(){
+        GenericObjectPool<PoolableConnection> sql = getConnectionPool();
+        System.out.println("Max alive connections: "+sql.getNumActive()+"; Max connections: "+sql.getMaxTotal());
+        System.out.println("Active: "+sql.getNumActive());
+        System.out.println("Idle: "+sql.getNumIdle());
+        System.out.println("Waiting: "+sql.getNumWaiters());
     }
 }
