@@ -1,5 +1,6 @@
-package dev.king.jdbc;
+package dev.king.jdbc.mysql;
 
+import dev.king.jdbc.JdbcProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.dbcp2.*;
@@ -7,11 +8,12 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import javax.sql.DataSource;
 
+@Getter
 @RequiredArgsConstructor
 public abstract class QueryPool implements JdbcProvider {
 
-    @Getter private final SqlCredentials credentials;
-    @Getter private GenericObjectPool<PoolableConnection> connectionPool;
+    private final SqlCredentials credentials;
+    private GenericObjectPool<PoolableConnection> connectionPool;
 
     public DataSource obtainDataSource(int maxConnections){
 

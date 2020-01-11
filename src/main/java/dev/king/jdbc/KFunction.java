@@ -1,4 +1,4 @@
-package dev.king.jdbc.functional;
+package dev.king.jdbc;
 
 import java.util.function.Function;
 

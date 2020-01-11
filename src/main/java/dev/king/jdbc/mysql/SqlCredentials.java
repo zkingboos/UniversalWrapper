@@ -1,4 +1,4 @@
-package dev.king.jdbc;
+package dev.king.jdbc.mysql;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

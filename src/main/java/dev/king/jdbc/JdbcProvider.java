@@ -1,14 +1,16 @@
 package dev.king.jdbc;
 
-import dev.king.jdbc.functional.KFunction;
-
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface JdbcProvider {
-    DataSource obtainDataSource(int maxConnections);
     boolean openConnection();
-    <K> Optional<K> query(String query, KFunction<ResultSet, K> consumer, Object... objects);
+    void closeConnection();
     int update(String query, Object... objects);
+
+    <K> Optional<Stream<K>> map(String query, KFunction<ResultSet, K> function, Object... objects);
+    <K> Optional<K> query(String query, KFunction<ResultSet, K> consumer, Object... objects);
+
+    void close(AutoCloseable... closeables);
 }
