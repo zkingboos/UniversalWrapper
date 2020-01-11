@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * The provider for sqlite for jdbc
+ * @author zkingboos_
+ */
 @RequiredArgsConstructor
 public class SqlProvider implements JdbcProvider {
 
@@ -24,17 +28,28 @@ public class SqlProvider implements JdbcProvider {
 
     private Connection con;
 
+    /**
+     * Close the single connection
+     */
     @Override
     public void closeConnection() {
         if(!hasConnection()) return;
         close(con);
     }
 
+    /**
+     * Verify if the connection is valid
+     * @return returns if connection an valid
+     */
     @SneakyThrows
     private boolean hasConnection(){
         return con != null && !con.isClosed();
     }
 
+    /**
+     * Opens the single connection
+     * @return returns if connection is opened
+     */
     @Override
     public boolean openConnection() {
         try {
@@ -49,6 +64,14 @@ public class SqlProvider implements JdbcProvider {
         }
     }
 
+    /**
+     * Uses just in select query
+     * @param query the query of mysql
+     * @param consumer if has a valid entry, function will be called and returns a result
+     * @param objects the objects that will be putted in the prepared statment
+     * @param <K> the generic type, used to return your prefer value
+     * @return returns a optional value, applied in function parameter
+     */
     @Override
     public <K> Optional<K> query(
             String query,
@@ -67,6 +90,12 @@ public class SqlProvider implements JdbcProvider {
         }
     }
 
+    /**
+     * Uses just in create, delete, insert and update querys
+     * @param query the query of mysql
+     * @param objects the objects that will be putted in the prepared statment
+     * @return returns a int response, if do appear -1, signify that have an error
+     */
     @Override
     public int update(
             String query,
@@ -86,6 +115,14 @@ public class SqlProvider implements JdbcProvider {
         }
     }
 
+    /**
+     * Uses just in select query
+     * @param query the query of mysql
+     * @param function if has a valid entry, function will be called and returns a result
+     * @param objects the objects that will be putted in the prepared statment
+     * @param <K> the generic type, used to return your prefer value
+     * @return returns a optional value, applied in function parameter
+     */
     @Override
     public <K> Optional<Stream<K>> map(
             String query,
@@ -108,6 +145,10 @@ public class SqlProvider implements JdbcProvider {
         }
     }
 
+    /**
+     * Close the all AutoCloseable instances
+     * @param closeables the all closeable connections
+     */
     @SneakyThrows
     public void close(AutoCloseable... closeables) {
         for(AutoCloseable close : closeables) { close.close(); }

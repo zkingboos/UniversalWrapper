@@ -4,6 +4,10 @@ import java.sql.ResultSet;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * The interface has provide basic methods
+ * @author zkingboos_
+ */
 public interface JdbcProvider {
     boolean openConnection();
     void closeConnection();

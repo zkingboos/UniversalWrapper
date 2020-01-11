@@ -12,20 +12,36 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Stream;
 
+/**
+ * The provider for mysql for jdbc
+ * @author zkingboos_
+ */
 public class MysqlProvider extends QueryPool {
 
     private DataSource dataSource;
 
+    /**
+     * Create an Provider object
+     * @param credentials the credentials to connect on mysql server
+     * @param maxConnections the maximum of connections that will be connected
+     */
     public MysqlProvider(SqlCredentials credentials, int maxConnections) {
         super(credentials);
         dataSource = obtainDataSource(maxConnections);
     }
 
+    /**
+     * Close the all connections of datasource
+     */
     @Override
     public void closeConnection() {
         getConnectionPool().close();
     }
 
+    /**
+     * Connect the all connections on mysql server
+     * @return if has a valid connection
+     */
     @Override
     public boolean openConnection() {
         try {
@@ -39,6 +55,14 @@ public class MysqlProvider extends QueryPool {
         }
     }
 
+    /**
+     * Uses just in select query
+     * @param query the query of mysql
+     * @param function if has a valid entry, function will be called and returns a result
+     * @param objects the objects that will be putted in the prepared statment
+     * @param <K> the generic type, used to return your prefer value
+     * @return returns a optional value, applied in function parameter
+     */
     @Override
     public <K> Optional<K> query(
             String query,
@@ -64,6 +88,14 @@ public class MysqlProvider extends QueryPool {
         }
     }
 
+    /**
+     * Uses just in select query
+     * @param query the query of mysql
+     * @param function if has a valid entry, function will be called and returns a result
+     * @param objects the objects that will be putted in the prepared statment
+     * @param <K> the generic type, used to return your prefer value
+     * @return returns a optional value, applied in function parameter
+     */
     public <K> Optional<Stream<K>> map(
             String query,
             KFunction<ResultSet, K> function,
@@ -85,6 +117,12 @@ public class MysqlProvider extends QueryPool {
         }
     }
 
+    /**
+     * Uses just in create, delete, insert and update querys
+     * @param query the query of mysql
+     * @param objects the objects that will be putted in the prepared statment
+     * @return returns a int response, if do appear -1, signify that have an error
+     */
     @Override
     public int update(
             String query,
@@ -105,6 +143,10 @@ public class MysqlProvider extends QueryPool {
         }
     }
 
+    /**
+     * Close the all AutoCloseable instances
+     * @param closeables the all closeable connections
+     */
     @SneakyThrows
     public void close(AutoCloseable... closeables) {
         for (AutoCloseable close : closeables) { close.close(); }

@@ -2,6 +2,11 @@ package dev.king.jdbc;
 
 import java.util.function.Function;
 
+/**
+ * Is trying block functional interface
+ * @param <T> input generic param, has used to ResultSet
+ * @param <R> out generic param, has used to returns an object type
+ */
 public interface KFunction<T, R> extends Function<T, R> {
 
     @Override

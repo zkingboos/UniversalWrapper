@@ -8,6 +8,10 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import javax.sql.DataSource;
 
+/**
+ * The pool of connections
+ * @author zkingboos_
+ */
 @Getter
 @RequiredArgsConstructor
 public abstract class QueryPool implements JdbcProvider {
@@ -15,6 +19,11 @@ public abstract class QueryPool implements JdbcProvider {
     private final SqlCredentials credentials;
     private GenericObjectPool<PoolableConnection> connectionPool;
 
+    /**
+     * Gets the mysql connection
+     * @param maxConnections passed in MysqlProvider constructor
+     * @return returns an DataSource object, that u can manage him
+     */
     public DataSource obtainDataSource(int maxConnections){
 
         String fullHost = "jdbc:mysql://"+credentials.getHostname()+"/"+credentials.getDatabase();
