@@ -3,11 +3,7 @@ package dev.king.universal.test.mysql;
 import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.mysql.UniversalCredentials;
-import dev.king.universal.test.common.TestPojo;
 import dev.king.universal.test.common.UniversalMethod;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public final class TestMysqlConnection {
 

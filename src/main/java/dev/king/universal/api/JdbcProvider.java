@@ -19,7 +19,7 @@ public interface JdbcProvider {
 
     boolean hasConnection();
 
-    int update(String query, Object... objects);
+    void update(String query, Object... objects);
 
     <K> Optional<Stream<K>> map(String query, KFunction<ResultSet, K> function, Object... objects);
 

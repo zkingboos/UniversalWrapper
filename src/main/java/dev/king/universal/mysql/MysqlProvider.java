@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import dev.king.universal.Utility;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
+import dev.king.universal.api.KRunnable;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
@@ -151,27 +153,24 @@ public class MysqlProvider extends PoolableConnection implements JdbcProvider {
      *
      * @param query   the query of mysql
      * @param objects the objects that will be putted in the prepared statment
-     * @return returns a int response, if do appear -1, signify that have an error
      */
     @Override
-    public int update(
+    public void update(
             String query,
             Object... objects
     ) {
-        try {
+        KRunnable runnable = () -> {
             Connection connection = getSource().getConnection();
             PreparedStatement ps = connection.prepareStatement(query);
 
             Utility.syncObjects(ps, objects);
-            int result = ps.executeUpdate();
+            ps.executeUpdate();
 
             //close connections
             close(ps, connection);
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
+        };
+
+        CompletableFuture.runAsync(runnable, executorService);
     }
 
     /**

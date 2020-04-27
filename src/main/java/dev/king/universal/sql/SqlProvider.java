@@ -3,6 +3,7 @@ package dev.king.universal.sql;
 import dev.king.universal.Utility;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
+import dev.king.universal.api.KRunnable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.sqlite.JDBC;
@@ -15,12 +16,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
 /**
  * The provider for sqlite for universal
- *
  * @author zkingboos_
  */
 @RequiredArgsConstructor
@@ -42,7 +43,6 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Verify if the connection is valid
-     *
      * @return returns if connection an valid
      */
     @SneakyThrows
@@ -52,7 +52,6 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Opens the single connection
-     *
      * @return returns if connection is opened
      */
     @Override
@@ -81,7 +80,6 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Uses just in select query
-     *
      * @param query    the query of mysql
      * @param consumer if has a valid entry, function will be called and returns a result
      * @param objects  the objects that will be putted in the prepared statment
@@ -108,28 +106,23 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Uses just in create, delete, insert and update querys
-     *
      * @param query   the query of mysql
      * @param objects the objects that will be putted in the prepared statment
-     * @return returns a int response, if do appear -1, signify that have an error
      */
     @Override
-    public int update(
+    public void update(
             String query,
             Object... objects
     ) {
-        try {
+        KRunnable runnable = () -> {
             PreparedStatement ps = con.prepareStatement(query);
             Utility.syncObjects(ps, objects);
 
-            int result = ps.executeUpdate();
+            ps.executeUpdate();
             close(ps);
+        };
 
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
+        CompletableFuture.runAsync(runnable, executorService);
     }
 
     /**
@@ -167,7 +160,6 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Close the all AutoCloseable instances
-     *
      * @param closeables the all closeable connections
      */
     @SneakyThrows

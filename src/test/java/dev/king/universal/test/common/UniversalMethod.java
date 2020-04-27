@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 public class UniversalMethod {
 
-    public static void dispatchProvider(JdbcProvider provider){
-        if(!provider.openConnection()) {
+    public static void dispatchProvider(JdbcProvider provider) {
+        if (!provider.openConnection()) {
             System.out.println("Nenhuma conexão com o banco de dados foi estabelecida");
             return;
         }
