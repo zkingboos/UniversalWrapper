@@ -15,7 +15,7 @@ allprojects {
 }
 
 dependencies {
-	 implementation 'com.github.zkingboos:UniversalWrapper:2.0.0'
+	 implementation 'com.github.zkingboos:UniversalWrapper:3.0.0'
 }
 ```
 
@@ -31,13 +31,13 @@ Maven:
 <dependency>
 	    <groupId>com.github.zkingboos</groupId>
 	    <artifactId>UniversalWrapper</artifactId>
-	    <version>2.0.0</version>
+	    <version>3.0.0</version>
 </dependency>
 
 ```
 
 ## Usage
-Look on examples branch 
+Look [here](https://github.com/zkingboos/UniversalWrapper/tree/master/src/test/java/dev/king/universal/test)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
