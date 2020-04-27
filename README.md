@@ -15,7 +15,7 @@ allprojects {
 }
 
 dependencies {
-	 implementation 'com.github.zkingboos:UniversalWrapper:3.0.0'
+	 implementation 'com.github.zkingboos:UniversalWrapper:3.0.2'
 }
 ```
 
@@ -31,7 +31,7 @@ Maven:
 <dependency>
 	    <groupId>com.github.zkingboos</groupId>
 	    <artifactId>UniversalWrapper</artifactId>
-	    <version>3.0.0</version>
+	    <version>3.0.2</version>
 </dependency>
 
 ```
