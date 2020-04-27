@@ -1,4 +1,4 @@
-package dev.king.jdbc;
+package dev.king.universal;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,13 +7,15 @@ import java.util.Iterator;
 
 /**
  * Has the mysql utilities
+ *
  * @author zkingboos_
  */
-public class Utilities {
+public class Utility {
 
     /**
      * Synchronize the objects param in the prepared statment
-     * @param ps is the statment created in jdbc provider
+     *
+     * @param ps      is the statment created in universal provider
      * @param objects is the vararg parameter of your sql query
      * @throws SQLException requires in the JDBC provider
      */
@@ -23,7 +25,8 @@ public class Utilities {
     ) throws SQLException {
         Iterator<Object> iterator = Arrays.stream(objects).iterator();
         for (int i = 1; iterator.hasNext(); i++) {
-            ps.setObject(i, iterator.next());
+            final Object obj = iterator.next();
+            ps.setObject(i, obj);
         }
     }
 }

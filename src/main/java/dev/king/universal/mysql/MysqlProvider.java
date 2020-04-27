@@ -1,52 +1,68 @@
-package dev.king.jdbc.mysql;
+package dev.king.universal.mysql;
 
-import dev.king.jdbc.KFunction;
-import dev.king.jdbc.Utilities;
+import com.zaxxer.hikari.HikariDataSource;
+import dev.king.universal.Utility;
+import dev.king.universal.api.JdbcProvider;
+import dev.king.universal.api.KFunction;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
 /**
- * The provider for mysql for jdbc
+ * The provider for mysql for universal
+ *
  * @author zkingboos_
  */
-public class MysqlProvider extends QueryPool {
+@Getter
+@RequiredArgsConstructor
+public class MysqlProvider extends PoolableConnection implements JdbcProvider {
 
-    private DataSource dataSource;
+    private final UniversalCredentials credentials;
+    private final int maxConnections;
+    private final ExecutorService executorService;
 
-    /**
-     * Create an Provider object
-     * @param credentials the credentials to connect on mysql server
-     * @param maxConnections the maximum of connections that will be connected
-     */
-    public MysqlProvider(SqlCredentials credentials, int maxConnections) {
-        super(credentials);
-        dataSource = obtainDataSource(maxConnections);
-    }
+    @Setter
+    private HikariDataSource source;
 
     /**
      * Close the all connections of datasource
      */
     @Override
     public void closeConnection() {
-        getConnectionPool().close();
+        getSource().close();
+    }
+
+    /**
+     * Verify if the connections is valid
+     *
+     * @return if an any valid connection
+     */
+    @Override
+    public boolean hasConnection() {
+        return openConnection();
     }
 
     /**
      * Connect the all connections on mysql server
+     *
      * @return if has a valid connection
      */
     @Override
     public boolean openConnection() {
         try {
-            Connection connection = dataSource.getConnection();
-            boolean result = connection != null && !connection.isClosed();
+            Connection connection = getSource().getConnection();
+            final boolean result = connection != null && !connection.isClosed();
             close(connection);
             return result;
         } catch (Exception e) {
@@ -56,11 +72,21 @@ public class MysqlProvider extends QueryPool {
     }
 
     /**
+     * Used to set hikaridatasource
+     */
+    @Override
+    public JdbcProvider preOpen() {
+        setSource(obtainDataSource(credentials, maxConnections));
+        return this;
+    }
+
+    /**
      * Uses just in select query
-     * @param query the query of mysql
+     *
+     * @param query    the query of mysql
      * @param function if has a valid entry, function will be called and returns a result
-     * @param objects the objects that will be putted in the prepared statment
-     * @param <K> the generic type, used to return your prefer value
+     * @param objects  the objects that will be putted in the prepared statment
+     * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
     @Override
@@ -70,11 +96,10 @@ public class MysqlProvider extends QueryPool {
             Object... objects
     ) {
         try {
-            Connection connection = dataSource.getConnection();
-
-            //create stm
+            Connection connection = getSource().getConnection();
             PreparedStatement ps = connection.prepareStatement(query);
-            Utilities.syncObjects(ps, objects);
+
+            Utility.syncObjects(ps, objects);
 
             ResultSet set = ps.executeQuery();
             K result = set != null && set.next() ? function.apply(set) : null;
@@ -90,36 +115,41 @@ public class MysqlProvider extends QueryPool {
 
     /**
      * Uses just in select query
-     * @param query the query of mysql
+     *
+     * @param query    the query of mysql
      * @param function if has a valid entry, function will be called and returns a result
-     * @param objects the objects that will be putted in the prepared statment
-     * @param <K> the generic type, used to return your prefer value
+     * @param objects  the objects that will be putted in the prepared statment
+     * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
     public <K> Optional<Stream<K>> map(
             String query,
             KFunction<ResultSet, K> function,
             Object... objects
-    ){
+    ) {
         try {
-            Connection connection = dataSource.getConnection();
+            Connection connection = getSource().getConnection();
             PreparedStatement ps = connection.prepareStatement(query);
-            Utilities.syncObjects(ps, objects);
+            Utility.syncObjects(ps, objects);
+
             ResultSet set = ps.executeQuery();
 
             List<K> paramList = new ArrayList<>();
-            while (set.next()) { paramList.add(function.apply(set)); }
+            while (set.next()) {
+                paramList.add(function.apply(set));
+            }
 
             close(set, ps, connection);
             return Optional.ofNullable(paramList.stream());
-        }catch (Exception e){
+        } catch (Exception e) {
             return Optional.empty();
         }
     }
 
     /**
      * Uses just in create, delete, insert and update querys
-     * @param query the query of mysql
+     *
+     * @param query   the query of mysql
      * @param objects the objects that will be putted in the prepared statment
      * @return returns a int response, if do appear -1, signify that have an error
      */
@@ -129,9 +159,10 @@ public class MysqlProvider extends QueryPool {
             Object... objects
     ) {
         try {
-            Connection connection = dataSource.getConnection();
-            PreparedStatement ps = connection.prepareCall(query);
-            Utilities.syncObjects(ps, objects);
+            Connection connection = getSource().getConnection();
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            Utility.syncObjects(ps, objects);
             int result = ps.executeUpdate();
 
             //close connections
@@ -145,18 +176,13 @@ public class MysqlProvider extends QueryPool {
 
     /**
      * Close the all AutoCloseable instances
+     *
      * @param closeables the all closeable connections
      */
     @SneakyThrows
     public void close(AutoCloseable... closeables) {
-        for (AutoCloseable close : closeables) { close.close(); }
+        for (AutoCloseable close : closeables) {
+            close.close();
+        }
     }
-
-    /*private void status() {
-        GenericObjectPool<PoolableConnection> sql = getConnectionPool();
-        System.out.println("Max alive connections: " + sql.getNumActive() + "; Max connections: " + sql.getMaxTotal());
-        System.out.println("Active: " + sql.getNumActive());
-        System.out.println("Idle: " + sql.getNumIdle());
-        System.out.println("Waiting: " + sql.getNumWaiters());
-    }*/
 }
