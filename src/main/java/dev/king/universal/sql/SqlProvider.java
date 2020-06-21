@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 
 /**
  * The provider for sqlite for universal
+ *
  * @author zkingboos_
  */
 @RequiredArgsConstructor
@@ -43,6 +44,7 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Verify if the connection is valid
+     *
      * @return returns if connection an valid
      */
     @SneakyThrows
@@ -52,6 +54,7 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Opens the single connection
+     *
      * @return returns if connection is opened
      */
     @Override
@@ -80,6 +83,7 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Uses just in select query
+     *
      * @param query    the query of mysql
      * @param consumer if has a valid entry, function will be called and returns a result
      * @param objects  the objects that will be putted in the prepared statment
@@ -106,6 +110,7 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Uses just in create, delete, insert and update querys
+     *
      * @param query   the query of mysql
      * @param objects the objects that will be putted in the prepared statment
      */
@@ -160,6 +165,7 @@ public class SqlProvider implements JdbcProvider {
 
     /**
      * Close the all AutoCloseable instances
+     *
      * @param closeables the all closeable connections
      */
     @SneakyThrows

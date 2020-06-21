@@ -16,7 +16,8 @@ public class PoolableConnection {
 
     /**
      * Gets the mysql connection
-     * @param credentials used to login into mysql
+     *
+     * @param credentials    used to login into mysql
      * @param maxConnections passed in MysqlProvider constructor
      * @return returns an DataSource object, that u can manage him
      */
