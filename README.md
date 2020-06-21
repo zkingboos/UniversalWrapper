@@ -4,36 +4,17 @@ An providers for JDBC
 
 ## Installation
 
-Uses jitpack on maven or gradle:
-
-Gradle: 
-```gradle
-allprojects {
-	repositories {
-		maven { url 'https://jitpack.io' }
-	}
-}
-
-dependencies {
-	 implementation 'com.github.zkingboos:UniversalWrapper:3.0.2'
-}
-```
+Using github packages
 
 Maven:
 ```xml
-<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-</repositories>
-
-<dependency>
-	    <groupId>com.github.zkingboos</groupId>
-	    <artifactId>UniversalWrapper</artifactId>
-	    <version>3.0.2</version>
-</dependency>
-
+<dependencies>
+    <dependency>
+      <groupId>dev.king.universal.UniversalWrapper</groupId>
+      <artifactId>universalwrapper</artifactId>
+      <version>3.0.2-SNAPSHOT</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Usage
