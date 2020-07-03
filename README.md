@@ -9,8 +9,9 @@ helps you to make queries easier, with the simplicity of the functional interfac
 * [Contributing](#contributing)
 
 ## Installation
+[![](https://jitpack.io/v/zkingboos/UniversalWrapper.svg)](https://jitpack.io/#zkingboos/UniversalWrapper)
+
 Using github packages: 
-> Latest version: 3.0.4-SNAPSHOT, replace it to VERSION tag
 
 Maven:
 ```xml

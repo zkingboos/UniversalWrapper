@@ -46,6 +46,6 @@ public final class UniversalMethod {
          * If you're using bukkit, you need to close
          * the service instance using: UniversalWrapper#closeService() at onDisable method.
          */
-        //wrapper.closeService();
+        wrapper.closeService();
     }
 }
