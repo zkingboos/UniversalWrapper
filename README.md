@@ -2,6 +2,12 @@
 A universal jdbc wrapper, 
 helps you to make queries easier, with the simplicity of the functional interfaces of java!
 
+## Summary
+* [Installation](#installation)
+* [Documentation](#documentation)
+* [Usage](#usage)
+* [Contributing](#contributing)
+
 ## Installation
 Using github packages: 
 > Latest version: 3.0.3-SNAPSHOT, replace it to VERSION tag
@@ -36,8 +42,12 @@ Using jitpack:
 </dependencies>
 ```
 
+## Documentation
+You can see project's documentation [here](https://zkingboos.github.io/UniversalWrapper).
+
 ## Usage
-Look [here](https://github.com/zkingboos/UniversalWrapper/tree/master/examples) for detailed examples!
+Look [here](https://github.com/zkingboos/UniversalWrapper/tree/master/test) for detailed examples!
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

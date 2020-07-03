@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"dev.king.universal"},{"l":"dev.king.universal.api"},{"l":"dev.king.universal.mysql"},{"l":"dev.king.universal.sql"},{"l":"dev.king.universal.test.common"},{"l":"dev.king.universal.test.mysql"},{"l":"dev.king.universal.test.sql"}]

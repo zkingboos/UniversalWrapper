@@ -1,8 +1,8 @@
 package dev.king.universal;
 
 import dev.king.universal.api.JdbcProvider;
-import dev.king.universal.mysql.MysqlProvider;
 import dev.king.universal.api.mysql.UniversalCredentials;
+import dev.king.universal.mysql.MysqlProvider;
 import dev.king.universal.sql.SqlProvider;
 
 import java.io.File;
@@ -21,7 +21,7 @@ public final class UniversalWrapper {
     /**
      * Creates provider to mysql
      *
-     * @param credentials login credentials
+     * @param credentials    login credentials
      * @param maxConnections number of max connections (idle connections are divided by 2)
      * @return instance of mysql provider
      */
@@ -46,7 +46,7 @@ public final class UniversalWrapper {
     /**
      * Close the instance of executor service
      */
-    public void closeService(){
+    public void closeService() {
         universalExecutor.shutdown();
     }
 }

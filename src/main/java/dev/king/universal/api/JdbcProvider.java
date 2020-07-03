@@ -20,6 +20,8 @@ public interface JdbcProvider {
 
     /**
      * Used to pre configure instance settings
+     *
+     * @return instance of current provider
      */
     JdbcProvider preOpen();
 
