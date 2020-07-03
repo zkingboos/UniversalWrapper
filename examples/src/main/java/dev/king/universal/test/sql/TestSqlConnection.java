@@ -1,8 +1,8 @@
-package test.sql;
+package dev.king.universal.test.sql;
 
 import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;
-import test.common.UniversalMethod;
+import dev.king.universal.test.common.UniversalMethod;
 
 import java.io.File;
 

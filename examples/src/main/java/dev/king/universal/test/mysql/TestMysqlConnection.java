@@ -1,9 +1,9 @@
-package test.mysql;
+package dev.king.universal.test.mysql;
 
 import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.mysql.UniversalCredentials;
-import test.common.UniversalMethod;
+import dev.king.universal.test.common.UniversalMethod;
 
 public final class TestMysqlConnection {
 
@@ -12,7 +12,7 @@ public final class TestMysqlConnection {
         JdbcProvider provider = wrapper.newMysqlProvider(
                 new UniversalCredentials(
                         "localhost:3306",
-                        "test",
+                        "dev/king/universal/test",
                         "root",
                         ""),
                 2

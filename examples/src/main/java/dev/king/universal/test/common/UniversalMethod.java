@@ -1,4 +1,4 @@
-package test.common;
+package dev.king.universal.test.common;
 
 import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;

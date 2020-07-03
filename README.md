@@ -1,10 +1,10 @@
 # UniversalWrapper
-
-An providers for JDBC
+A universal jdbc wrapper, 
+helps you to make queries easier, with the simplicity of the functional interfaces of java!
 
 ## Installation
-
-Using github packages
+Using github packages: 
+> Latest version: 3.0.3-SNAPSHOT, replace it to VERSION tag
 
 Maven:
 ```xml
@@ -12,15 +12,32 @@ Maven:
     <dependency>
       <groupId>dev.king.universal</groupId>
       <artifactId>UniversalWrapper</artifactId>
-      <version>3.0.2-SNAPSHOT</version>
+      <version>VERSION</version>
     </dependency>
 </dependencies>
 ```
-Later use mvn install
+> Later use mvn install
+
+Using jitpack: 
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.zkingboos</groupId>
+	    <artifactId>UniversalWrapper</artifactId>
+	    <version>VERSION</version>
+    </dependency>
+</dependencies>
+```
 
 ## Usage
-Look [here](https://github.com/zkingboos/UniversalWrapper/tree/master/src/test/java/dev/king/universal/test)
-
+Look [here](https://github.com/zkingboos/UniversalWrapper/tree/master/examples) for detailed examples!
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
