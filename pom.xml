@@ -12,7 +12,7 @@
 
     <groupId>dev.king.universal</groupId>
     <artifactId>UniversalWrapper</artifactId>
-    <version>3.0.3-SNAPSHOT</version>
+    <version>3.0.4-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>

@@ -10,7 +10,7 @@ helps you to make queries easier, with the simplicity of the functional interfac
 
 ## Installation
 Using github packages: 
-> Latest version: 3.0.3-SNAPSHOT, replace it to VERSION tag
+> Latest version: 3.0.4-SNAPSHOT, replace it to VERSION tag
 
 Maven:
 ```xml
