@@ -10,7 +10,7 @@ import java.util.Iterator;
  *
  * @author zkingboos_
  */
-public class Utility {
+public final class Utility {
 
     /**
      * Synchronize the objects param in the prepared statement

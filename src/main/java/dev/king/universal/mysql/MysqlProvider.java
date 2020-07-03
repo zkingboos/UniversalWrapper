@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 @Getter
 @RequiredArgsConstructor
-public class MysqlProvider extends PoolableConnection implements JdbcProvider {
+public final class MysqlProvider extends PoolableConnection implements JdbcProvider {
 
     private final UniversalCredentials credentials;
     private final int maxConnections;

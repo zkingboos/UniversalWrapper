@@ -12,7 +12,7 @@ public final class TestMysqlConnection {
         JdbcProvider provider = wrapper.newMysqlProvider(
                 new UniversalCredentials(
                         "localhost:3306",
-                        "dev/king/universal/test",
+                        "test",
                         "root",
                         ""),
                 2

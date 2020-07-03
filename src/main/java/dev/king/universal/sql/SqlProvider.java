@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
-public class SqlProvider implements JdbcProvider {
+public final class SqlProvider implements JdbcProvider {
 
     private final File output;
     private final ExecutorService executorService;
@@ -70,8 +70,10 @@ public class SqlProvider implements JdbcProvider {
             PreparedStatement ps = con.prepareStatement(query);
             Utility.syncObjects(ps, objects);
             ResultSet set = ps.executeQuery();
+
             K result = set != null && set.next() ? consumer.apply(set) : null;
             close(ps, set);
+
             return Optional.ofNullable(result);
         } catch (Exception e) {
             return Optional.empty();
