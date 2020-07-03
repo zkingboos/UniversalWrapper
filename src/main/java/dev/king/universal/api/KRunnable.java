@@ -1,5 +1,8 @@
 package dev.king.universal.api;
 
+/**
+ * Safety function interface
+ */
 public interface KRunnable extends Runnable {
 
     @Override

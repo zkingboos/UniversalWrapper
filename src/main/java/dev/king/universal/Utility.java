@@ -6,16 +6,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * Has the mysql utilities
+ * This class providers basic methods
  *
  * @author zkingboos_
  */
 public class Utility {
 
     /**
-     * Synchronize the objects param in the prepared statment
+     * Synchronize the objects param in the prepared statement
      *
-     * @param ps      is the statment created in universal provider
+     * @param ps      is the statement created in universal provider
      * @param objects is the vararg parameter of your sql query
      * @throws SQLException requires in the JDBC provider
      */

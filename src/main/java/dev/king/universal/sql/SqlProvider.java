@@ -20,11 +20,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
-/**
- * The provider for sqlite for universal
- *
- * @author zkingboos_
- */
 @RequiredArgsConstructor
 public class SqlProvider implements JdbcProvider {
 
@@ -33,35 +28,23 @@ public class SqlProvider implements JdbcProvider {
 
     private Connection con;
 
-    /**
-     * Close the single connection
-     */
     @Override
     public void closeConnection() {
-        if (!hasConnection()) return;
-        close(con);
+        if (hasConnection())
+            close(con);
     }
 
-    /**
-     * Verify if the connection is valid
-     *
-     * @return returns if connection an valid
-     */
     @SneakyThrows
     public boolean hasConnection() {
         return con != null && !con.isClosed();
     }
 
-    /**
-     * Opens the single connection
-     *
-     * @return returns if connection is opened
-     */
     @Override
     public boolean openConnection() {
         try {
             if (hasConnection()) return true;
             if (!output.exists()) return false;
+
             DriverManager.registerDriver(new JDBC());
             con = DriverManager.getConnection("jdbc:sqlite:" + output);
             return !con.isClosed();
@@ -71,25 +54,12 @@ public class SqlProvider implements JdbcProvider {
         }
     }
 
-    /**
-     * Dont do nothing here
-     *
-     * @return actual instance
-     */
     @Override
     public JdbcProvider preOpen() {
+        //TODO: doesn't nothing
         return this;
     }
 
-    /**
-     * Uses just in select query
-     *
-     * @param query    the query of mysql
-     * @param consumer if has a valid entry, function will be called and returns a result
-     * @param objects  the objects that will be putted in the prepared statment
-     * @param <K>      the generic type, used to return your prefer value
-     * @return returns a optional value, applied in function parameter
-     */
     @Override
     public <K> Optional<K> query(
             String query,
@@ -108,12 +78,6 @@ public class SqlProvider implements JdbcProvider {
         }
     }
 
-    /**
-     * Uses just in create, delete, insert and update querys
-     *
-     * @param query   the query of mysql
-     * @param objects the objects that will be putted in the prepared statment
-     */
     @Override
     public void update(
             String query,
@@ -130,15 +94,6 @@ public class SqlProvider implements JdbcProvider {
         CompletableFuture.runAsync(runnable, executorService);
     }
 
-    /**
-     * Uses just in select query
-     *
-     * @param query    the query of mysql
-     * @param function if has a valid entry, function will be called and returns a result
-     * @param objects  the objects that will be putted in the prepared statment
-     * @param <K>      the generic type, used to return your prefer value
-     * @return returns a optional value, applied in function parameter
-     */
     @Override
     public <K> Optional<Stream<K>> map(
             String query,
@@ -163,11 +118,6 @@ public class SqlProvider implements JdbcProvider {
         }
     }
 
-    /**
-     * Close the all AutoCloseable instances
-     *
-     * @param closeables the all closeable connections
-     */
     @SneakyThrows
     public void close(AutoCloseable... closeables) {
         for (AutoCloseable close : closeables) {

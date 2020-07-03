@@ -1,5 +1,6 @@
-package dev.king.universal.mysql;
+package dev.king.universal.api.mysql;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -9,7 +10,8 @@ import lombok.RequiredArgsConstructor;
  * @author zkingboos_
  */
 @Getter
+@Builder
 @RequiredArgsConstructor
-public class UniversalCredentials {
+public final class UniversalCredentials {
     private final String hostname, database, user, password;
 }

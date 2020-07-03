@@ -1,20 +1,21 @@
-package dev.king.universal.test.common;
+package test.common;
 
+import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UniversalMethod {
+public final class UniversalMethod {
 
-    public static void dispatchProvider(JdbcProvider provider) {
+    public static void dispatchProvider(JdbcProvider provider, UniversalWrapper wrapper) {
         if (!provider.openConnection()) {
-            System.out.println("Nenhuma conexão com o banco de dados foi estabelecida");
+            System.out.println("No database connection has been established");
             return;
         }
 
         /*
-         * The method update is used to send querys that you dont need returns
+         * The method update is used to send query that you don't need returns
          */
         provider.update("create table if not exists king(name varchar(1))");
         provider.update("insert into king (name) values (?)", "y");
@@ -33,12 +34,18 @@ public class UniversalMethod {
         /*
          * Get a map of objects
          */
-        List<TestPojo> pojoSet = provider.map(
+        List<TestPojo> pooSet = provider.map(
                 "select * from king",
                 set -> new TestPojo(set.getString("name"))
         ).get().collect(Collectors.toList());
 
         System.out.println("Single object: " + pojo);
-        System.out.println("Object collection: " + pojoSet);
+        System.out.println("Object collection: " + pooSet);
+
+        /**
+         * If you're using bukkit, you need to close
+         * the service instance using: UniversalWrapper#closeService() at onDisable method.
+         */
+        wrapper.closeService();
     }
 }

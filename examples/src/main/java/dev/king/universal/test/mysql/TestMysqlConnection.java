@@ -1,9 +1,9 @@
-package dev.king.universal.test.mysql;
+package test.mysql;
 
 import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;
-import dev.king.universal.mysql.UniversalCredentials;
-import dev.king.universal.test.common.UniversalMethod;
+import dev.king.universal.api.mysql.UniversalCredentials;
+import test.common.UniversalMethod;
 
 public final class TestMysqlConnection {
 
@@ -18,6 +18,6 @@ public final class TestMysqlConnection {
                 2
         ).preOpen();
 
-        UniversalMethod.dispatchProvider(provider);
+        UniversalMethod.dispatchProvider(provider, wrapper);
     }
 }

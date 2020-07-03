@@ -1,31 +1,23 @@
 package dev.king.universal.mysql;
 
 import com.zaxxer.hikari.HikariDataSource;
+import dev.king.universal.api.mysql.PoolableProvider;
+import dev.king.universal.api.mysql.UniversalCredentials;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
-/**
- * The pool of connections
- *
- * @author zkingboos_
- */
 @Getter
 @RequiredArgsConstructor
-public class PoolableConnection {
+public class PoolableConnection implements PoolableProvider {
 
-    /**
-     * Gets the mysql connection
-     *
-     * @param credentials    used to login into mysql
-     * @param maxConnections passed in MysqlProvider constructor
-     * @return returns an DataSource object, that u can manage him
-     */
     @SneakyThrows
     public HikariDataSource obtainDataSource(UniversalCredentials credentials, int maxConnections) {
-        final String fullHost = "jdbc:mysql://" +
-                credentials.getHostname() + "/" +
-                credentials.getDatabase();
+        final String fullHost = String.format(
+                "jdbc:mysql://%s/%s",
+                credentials.getHostname(),
+                credentials.getDatabase()
+        );
 
         final HikariDataSource source = new HikariDataSource();
 
@@ -40,6 +32,7 @@ public class PoolableConnection {
         source.setAutoCommit(true);
         source.setLoginTimeout(3);
 
+        source.addDataSourceProperty("characterEncoding", "utf8");
         return source;
     }
 }

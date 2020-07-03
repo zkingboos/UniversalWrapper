@@ -1,8 +1,8 @@
-package dev.king.universal.test.sql;
+package test.sql;
 
 import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;
-import dev.king.universal.test.common.UniversalMethod;
+import test.common.UniversalMethod;
 
 import java.io.File;
 
@@ -14,6 +14,6 @@ public final class TestSqlConnection {
                 new File("C:/Users/fcthe/Desktop/teste.db")
         ).preOpen();
 
-        UniversalMethod.dispatchProvider(provider);
+        UniversalMethod.dispatchProvider(provider, wrapper);
     }
 }

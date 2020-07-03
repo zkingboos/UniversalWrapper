@@ -5,6 +5,7 @@ import dev.king.universal.Utility;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
 import dev.king.universal.api.KRunnable;
+import dev.king.universal.api.mysql.UniversalCredentials;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -21,11 +22,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
-/**
- * The provider for mysql for universal
- *
- * @author zkingboos_
- */
 @Getter
 @RequiredArgsConstructor
 public class MysqlProvider extends PoolableConnection implements JdbcProvider {
@@ -37,29 +33,16 @@ public class MysqlProvider extends PoolableConnection implements JdbcProvider {
     @Setter
     private HikariDataSource source;
 
-    /**
-     * Close the all connections of datasource
-     */
     @Override
     public void closeConnection() {
         getSource().close();
     }
 
-    /**
-     * Verify if the connections is valid
-     *
-     * @return if an any valid connection
-     */
     @Override
     public boolean hasConnection() {
         return openConnection();
     }
 
-    /**
-     * Connect the all connections on mysql server
-     *
-     * @return if has a valid connection
-     */
     @Override
     public boolean openConnection() {
         try {
@@ -73,24 +56,12 @@ public class MysqlProvider extends PoolableConnection implements JdbcProvider {
         }
     }
 
-    /**
-     * Used to set hikaridatasource
-     */
     @Override
     public JdbcProvider preOpen() {
         setSource(obtainDataSource(credentials, maxConnections));
         return this;
     }
 
-    /**
-     * Uses just in select query
-     *
-     * @param query    the query of mysql
-     * @param function if has a valid entry, function will be called and returns a result
-     * @param objects  the objects that will be putted in the prepared statment
-     * @param <K>      the generic type, used to return your prefer value
-     * @return returns a optional value, applied in function parameter
-     */
     @Override
     public <K> Optional<K> query(
             String query,
@@ -115,15 +86,6 @@ public class MysqlProvider extends PoolableConnection implements JdbcProvider {
         }
     }
 
-    /**
-     * Uses just in select query
-     *
-     * @param query    the query of mysql
-     * @param function if has a valid entry, function will be called and returns a result
-     * @param objects  the objects that will be putted in the prepared statment
-     * @param <K>      the generic type, used to return your prefer value
-     * @return returns a optional value, applied in function parameter
-     */
     public <K> Optional<Stream<K>> map(
             String query,
             KFunction<ResultSet, K> function,
@@ -148,12 +110,6 @@ public class MysqlProvider extends PoolableConnection implements JdbcProvider {
         }
     }
 
-    /**
-     * Uses just in create, delete, insert and update querys
-     *
-     * @param query   the query of mysql
-     * @param objects the objects that will be putted in the prepared statment
-     */
     @Override
     public void update(
             String query,
@@ -166,18 +122,13 @@ public class MysqlProvider extends PoolableConnection implements JdbcProvider {
             Utility.syncObjects(ps, objects);
             ps.executeUpdate();
 
-            //close connections
+            //close the connections
             close(ps, connection);
         };
 
         CompletableFuture.runAsync(runnable, executorService);
     }
 
-    /**
-     * Close the all AutoCloseable instances
-     *
-     * @param closeables the all closeable connections
-     */
     @SneakyThrows
     public void close(AutoCloseable... closeables) {
         for (AutoCloseable close : closeables) {
