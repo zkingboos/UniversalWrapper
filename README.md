@@ -9,6 +9,7 @@ helps you to make queries easier, with the simplicity of the functional interfac
 * [Contributing](#contributing)
 
 ## Installation
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4a7c0edf2e6846a6960d7dbb14b7a30d)](https://app.codacy.com/manual/zkingboos/UniversalWrapper?utm_source=github.com&utm_medium=referral&utm_content=zkingboos/UniversalWrapper&utm_campaign=Badge_Grade_Settings)
 [![](https://jitpack.io/v/zkingboos/UniversalWrapper.svg)](https://jitpack.io/#zkingboos/UniversalWrapper)
 
 Using github packages: 
