@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020 yking-projects
+ */
+
 package dev.king.universal;
 
 import java.sql.PreparedStatement;
@@ -10,7 +14,7 @@ import java.util.Iterator;
  *
  * @author zkingboos_
  */
-public final class Utility {
+public final class UniversalUtil {
 
     /**
      * Synchronize the objects param in the prepared statement

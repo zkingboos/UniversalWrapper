@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020 yking-projects
+ */
+
 package dev.king.universal.api;
 
 import java.sql.ResultSet;

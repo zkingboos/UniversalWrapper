@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) 2020 yking-projects
+ */
+
 package dev.king.universal;
 
 import dev.king.universal.api.JdbcProvider;
-import dev.king.universal.api.mysql.UniversalCredentials;
+import dev.king.universal.api.mysql.UniversalCredential;
 import dev.king.universal.mysql.MysqlProvider;
 import dev.king.universal.sql.SqlProvider;
 import lombok.Getter;
@@ -25,7 +29,7 @@ public final class UniversalWrapper {
      * @param maxConnections number of max connections (idle connections are divided by 2)
      * @return instance of mysql provider
      */
-    public JdbcProvider newMysqlProvider(UniversalCredentials credentials, int maxConnections) {
+    public JdbcProvider newMysqlProvider(UniversalCredential credentials, int maxConnections) {
         return new MysqlProvider(
           credentials, maxConnections
         );

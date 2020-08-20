@@ -1,8 +1,12 @@
+/*
+ * Copyright (c) 2020 yking-projects
+ */
+
 package dev.king.universal.mysql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import dev.king.universal.api.mysql.PoolableProvider;
-import dev.king.universal.api.mysql.UniversalCredentials;
+import dev.king.universal.api.mysql.UniversalCredential;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +16,7 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 public class PoolableConnection implements PoolableProvider {
 
-    public HikariDataSource obtainDataSource(UniversalCredentials credentials, int maxConnections) throws SQLException {
+    public HikariDataSource obtainDataSource(UniversalCredential credentials, int maxConnections) throws SQLException {
         final String fullHost = String.format(
           "jdbc:mysql://%s/%s",
           credentials.getHostname(),

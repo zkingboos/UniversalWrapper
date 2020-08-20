@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020 yking-projects
+ */
+
 package dev.king.universal.api.mysql;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -5,9 +9,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.SQLException;
 
 /**
- * The pool of connections
- *
- * @author zkingboos_
+ * The pool of connection, usefully performance to big queries
  */
 public interface PoolableProvider {
 
@@ -18,5 +20,5 @@ public interface PoolableProvider {
      * @param maxConnections passed in MysqlProvider constructor
      * @return returns an DataSource object, that u can manage him
      */
-    HikariDataSource obtainDataSource(UniversalCredentials credentials, int maxConnections) throws SQLException;
+    HikariDataSource obtainDataSource(UniversalCredential credentials, int maxConnections) throws SQLException;
 }

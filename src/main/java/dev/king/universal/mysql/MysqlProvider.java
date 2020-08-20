@@ -1,10 +1,14 @@
+/*
+ * Copyright (c) 2020 yking-projects
+ */
+
 package dev.king.universal.mysql;
 
 import com.zaxxer.hikari.HikariDataSource;
-import dev.king.universal.Utility;
+import dev.king.universal.UniversalUtil;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
-import dev.king.universal.api.mysql.UniversalCredentials;
+import dev.king.universal.api.mysql.UniversalCredential;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public final class MysqlProvider extends PoolableConnection implements JdbcProvider {
 
-    private final UniversalCredentials credentials;
+    private final UniversalCredential credentials;
     private final int maxConnections;
 
     @Setter
@@ -60,7 +64,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     public <K> K query(String query, KFunction<ResultSet, K> function, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                Utility.syncObjects(statement, objects);
+                UniversalUtil.syncObjects(statement, objects);
 
                 try (ResultSet set = statement.executeQuery()) {
                     return set != null && set.next() ?
@@ -77,7 +81,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     public <K> List<K> map(String query, KFunction<ResultSet, K> function, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                Utility.syncObjects(statement, objects);
+                UniversalUtil.syncObjects(statement, objects);
 
                 try (ResultSet set = statement.executeQuery()) {
                     List<K> paramList = new ArrayList<>();
@@ -97,7 +101,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     public void update(String query, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                Utility.syncObjects(statement, objects);
+                UniversalUtil.syncObjects(statement, objects);
                 statement.executeUpdate();
             }
         } catch (SQLException $) {

@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) 2020 yking-projects
+ */
+
 package dev.king.universal.sql;
 
-import dev.king.universal.Utility;
+import dev.king.universal.UniversalUtil;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +63,7 @@ public final class SqlProvider implements JdbcProvider {
     @Override
     public <K> K query(String query, KFunction<ResultSet, K> consumer, Object... objects) {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            Utility.syncObjects(ps, objects);
+            UniversalUtil.syncObjects(ps, objects);
 
             try (ResultSet set = ps.executeQuery()) {
                 return set != null && set.next() ?
@@ -75,7 +79,7 @@ public final class SqlProvider implements JdbcProvider {
     @Override
     public void update(String query, Object... objects) {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
-            Utility.syncObjects(statement, objects);
+            UniversalUtil.syncObjects(statement, objects);
 
             statement.executeUpdate();
         } catch (SQLException $) {
@@ -88,7 +92,7 @@ public final class SqlProvider implements JdbcProvider {
     @Override
     public <K> List<K> map(String query, KFunction<ResultSet, K> function, Object... objects) {
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
-            Utility.syncObjects(statement, objects);
+            UniversalUtil.syncObjects(statement, objects);
 
             try (ResultSet set = statement.executeQuery()) {
                 List<K> paramResult = new ArrayList<>();
