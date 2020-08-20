@@ -1,8 +1,7 @@
 package dev.king.universal.api;
 
 import java.sql.ResultSet;
-import java.util.Optional;
-import java.util.stream.Stream;
+import java.util.List;
 
 /**
  * The interface has provide basic methods
@@ -54,7 +53,7 @@ public interface JdbcProvider {
      * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
-    <K> Optional<Stream<K>> map(String query, KFunction<ResultSet, K> function, Object... objects);
+    <K> List<K> map(String query, KFunction<ResultSet, K> function, Object... objects);
 
     /**
      * Uses just in select query
@@ -65,12 +64,5 @@ public interface JdbcProvider {
      * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
-    <K> Optional<K> query(String query, KFunction<ResultSet, K> consumer, Object... objects);
-
-    /**
-     * Close the all AutoCloseable instances
-     *
-     * @param closeables the all closeable connections
-     */
-    void close(AutoCloseable... closeables);
+    <K> K query(String query, KFunction<ResultSet, K> consumer, Object... objects);
 }

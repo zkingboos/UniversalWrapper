@@ -4,10 +4,9 @@ import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.mysql.UniversalCredentials;
 import dev.king.universal.mysql.MysqlProvider;
 import dev.king.universal.sql.SqlProvider;
+import lombok.Getter;
 
 import java.io.File;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Abstract provider
@@ -16,7 +15,8 @@ import java.util.concurrent.Executors;
  */
 public final class UniversalWrapper {
 
-    private final ExecutorService universalExecutor = Executors.newFixedThreadPool(2);
+    @Getter(lazy = true)
+    private static final UniversalWrapper instance = new UniversalWrapper();
 
     /**
      * Creates provider to mysql
@@ -27,7 +27,7 @@ public final class UniversalWrapper {
      */
     public JdbcProvider newMysqlProvider(UniversalCredentials credentials, int maxConnections) {
         return new MysqlProvider(
-                credentials, maxConnections, universalExecutor
+          credentials, maxConnections
         );
     }
 
@@ -39,14 +39,7 @@ public final class UniversalWrapper {
      */
     public JdbcProvider newSqlProvider(File file) {
         return new SqlProvider(
-                file, universalExecutor
+          file
         );
-    }
-
-    /**
-     * Close the instance of executor service
-     */
-    public void closeService() {
-        universalExecutor.shutdown();
     }
 }

@@ -1,14 +1,12 @@
 package dev.king.universal.test.common;
 
-import dev.king.universal.UniversalWrapper;
 import dev.king.universal.api.JdbcProvider;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class UniversalMethod {
 
-    public static void dispatchProvider(JdbcProvider provider, UniversalWrapper wrapper) {
+    public static void dispatchProvider(JdbcProvider provider) {
         if (!provider.openConnection()) {
             System.out.println("No database connection has been established");
             return;
@@ -25,27 +23,21 @@ public final class UniversalMethod {
          * The first field is the query, the second field is the lambda set, on third field
          * Is the query objects
          */
-        final TestPojo pojo = provider.query(
-                "select * from king where name = ?",
-                set -> new TestPojo(set.getString("name")),
-                "y"
-        ).orElse(new TestPojo("invalid user"));
+        final TestEntity entity = provider.query(
+          "select * from king where name = ?",
+          set -> new TestEntity(set.getString("name")),
+          "y"
+        );
 
         /*
          * Get a map of objects
          */
-        List<TestPojo> pooSet = provider.map(
-                "select * from king",
-                set -> new TestPojo(set.getString("name"))
-        ).get().collect(Collectors.toList());
+        List<TestEntity> entities = provider.map(
+          "select * from king",
+          set -> new TestEntity(set.getString("name"))
+        );
 
-        System.out.println("Single object: " + pojo);
-        System.out.println("Object collection: " + pooSet);
-
-        /**
-         * If you're using bukkit, you need to close
-         * the service instance using: UniversalWrapper#closeService() at onDisable method.
-         */
-        wrapper.closeService();
+        System.out.println("Single object: " + entity);
+        System.out.println("Object collection: " + entities);
     }
 }

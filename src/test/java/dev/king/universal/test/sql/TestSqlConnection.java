@@ -9,11 +9,11 @@ import java.io.File;
 public final class TestSqlConnection {
 
     public static void main(String[] args) {
-        final UniversalWrapper wrapper = new UniversalWrapper();
+        final UniversalWrapper wrapper = UniversalWrapper.getInstance();
         final JdbcProvider provider = wrapper.newSqlProvider(
-                new File("C:/Users/fcthe/Desktop/teste.db")
-        ).preOpen();
+          new File("C:/Users/fcthe/Desktop/teste.db")
+        );
 
-        UniversalMethod.dispatchProvider(provider, wrapper);
+        UniversalMethod.dispatchProvider(provider);
     }
 }

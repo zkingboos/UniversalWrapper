@@ -5,18 +5,18 @@ import dev.king.universal.api.mysql.PoolableProvider;
 import dev.king.universal.api.mysql.UniversalCredentials;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+
+import java.sql.SQLException;
 
 @Getter
 @RequiredArgsConstructor
 public class PoolableConnection implements PoolableProvider {
 
-    @SneakyThrows
-    public HikariDataSource obtainDataSource(UniversalCredentials credentials, int maxConnections) {
+    public HikariDataSource obtainDataSource(UniversalCredentials credentials, int maxConnections) throws SQLException {
         final String fullHost = String.format(
-                "jdbc:mysql://%s/%s",
-                credentials.getHostname(),
-                credentials.getDatabase()
+          "jdbc:mysql://%s/%s",
+          credentials.getHostname(),
+          credentials.getDatabase()
         );
 
         final HikariDataSource source = new HikariDataSource();

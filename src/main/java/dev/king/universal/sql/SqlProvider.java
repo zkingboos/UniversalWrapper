@@ -3,40 +3,35 @@ package dev.king.universal.sql;
 import dev.king.universal.Utility;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
-import dev.king.universal.api.KRunnable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.sqlite.JDBC;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 public final class SqlProvider implements JdbcProvider {
 
     private final File output;
-    private final ExecutorService executorService;
-
-    private Connection con;
+    private Connection connection;
 
     @Override
     public void closeConnection() {
-        if (hasConnection())
-            close(con);
+        if (!hasConnection()) return;
+
+        try {
+            connection.close();
+        } catch (SQLException $) {
+            $.printStackTrace();
+        }
     }
 
     @SneakyThrows
     public boolean hasConnection() {
-        return con != null && !con.isClosed();
+        return connection != null && !connection.isClosed();
     }
 
     @Override
@@ -46,10 +41,11 @@ public final class SqlProvider implements JdbcProvider {
             if (!output.exists()) return false;
 
             DriverManager.registerDriver(new JDBC());
-            con = DriverManager.getConnection("jdbc:sqlite:" + output);
-            return !con.isClosed();
-        } catch (Exception e) {
-            e.printStackTrace();
+            connection = DriverManager.getConnection("jdbc:sqlite:" + output);
+
+            return !connection.isClosed();
+        } catch (SQLException $) {
+            $.printStackTrace();
             return false;
         }
     }
@@ -61,69 +57,50 @@ public final class SqlProvider implements JdbcProvider {
     }
 
     @Override
-    public <K> Optional<K> query(
-            String query,
-            KFunction<ResultSet, K> consumer,
-            Object... objects
-    ) {
-        try {
-            PreparedStatement ps = con.prepareStatement(query);
-            Utility.syncObjects(ps, objects);
-            ResultSet set = ps.executeQuery();
-
-            K result = set != null && set.next() ? consumer.apply(set) : null;
-            close(ps, set);
-
-            return Optional.ofNullable(result);
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-    }
-
-    @Override
-    public void update(
-            String query,
-            Object... objects
-    ) {
-        KRunnable runnable = () -> {
-            PreparedStatement ps = con.prepareStatement(query);
+    public <K> K query(String query, KFunction<ResultSet, K> consumer, Object... objects) {
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             Utility.syncObjects(ps, objects);
 
-            ps.executeUpdate();
-            close(ps);
-        };
-
-        CompletableFuture.runAsync(runnable, executorService);
-    }
-
-    @Override
-    public <K> Optional<Stream<K>> map(
-            String query,
-            KFunction<ResultSet, K> function,
-            Object... objects
-    ) {
-        try {
-            PreparedStatement ps = con.prepareStatement(query);
-            Utility.syncObjects(ps, objects);
-            ResultSet set = ps.executeQuery();
-
-            List<K> paramResult = new ArrayList<>();
-            while (set.next()) {
-                paramResult.add(function.apply(set));
+            try (ResultSet set = ps.executeQuery()) {
+                return set != null && set.next() ?
+                  consumer.apply(set) :
+                  null;
             }
-
-            close(set, ps);
-            return Optional.ofNullable(paramResult.stream());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
+        } catch (SQLException $) {
+            $.printStackTrace();
+            return null;
         }
     }
 
-    @SneakyThrows
-    public void close(AutoCloseable... closeables) {
-        for (AutoCloseable close : closeables) {
-            close.close();
+    @Override
+    public void update(String query, Object... objects) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            Utility.syncObjects(statement, objects);
+
+            statement.executeUpdate();
+        } catch (SQLException $) {
+            $.printStackTrace();
+        }
+
+        //CompletableFuture.runAsync(runnable, executorService);
+    }
+
+    @Override
+    public <K> List<K> map(String query, KFunction<ResultSet, K> function, Object... objects) {
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
+            Utility.syncObjects(statement, objects);
+
+            try (ResultSet set = statement.executeQuery()) {
+                List<K> paramResult = new ArrayList<>();
+                while (set.next()) {
+                    paramResult.add(function.apply(set));
+                }
+
+                return paramResult;
+            }
+        } catch (SQLException $) {
+            $.printStackTrace();
+            return null;
         }
     }
 }
