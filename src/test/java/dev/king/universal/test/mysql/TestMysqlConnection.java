@@ -12,8 +12,7 @@ import dev.king.universal.test.common.UniversalMethod;
 public final class TestMysqlConnection {
 
     public static void main(String[] args) {
-        final UniversalWrapper wrapper = UniversalWrapper.getInstance();
-        JdbcProvider provider = wrapper.newMysqlProvider(
+        JdbcProvider provider = UniversalWrapper.newMysqlProvider(
           new UniversalCredential(
             "localhost:3306",
             "test",
