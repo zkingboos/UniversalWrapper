@@ -1,14 +1,16 @@
 package dev.king.universal.test.common;
 
 import dev.king.universal.api.JdbcProvider;
+import lombok.extern.java.Log;
 
 import java.util.List;
 
+@Log
 public final class UniversalMethod {
 
     public static void dispatchProvider(JdbcProvider provider) {
         if (!provider.openConnection()) {
-            System.out.println("No database connection has been established");
+            log.severe("No database connection has been established");
             return;
         }
 
@@ -37,7 +39,7 @@ public final class UniversalMethod {
           set -> new TestEntity(set.getString("name"))
         );
 
-        System.out.println("Single object: " + entity);
-        System.out.println("Object collection: " + entities);
+        log.info(String.format("Single object: %s", entity));
+        log.info(String.format("Object collection: %s", entities));
     }
 }
