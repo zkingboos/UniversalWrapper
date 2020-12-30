@@ -24,8 +24,7 @@ public final class UniversalUtil {
     public static void syncObjects(PreparedStatement statement, Object... objects) throws SQLException {
         Iterator<Object> iterator = Arrays.stream(objects).iterator();
         for (int i = 1; iterator.hasNext(); i++) {
-            final Object object = iterator.next();
-            statement.setObject(i, object);
+            statement.setObject(i, iterator.next());
         }
     }
 }
