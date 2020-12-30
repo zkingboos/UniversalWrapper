@@ -8,7 +8,6 @@ import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.mysql.UniversalCredential;
 import dev.king.universal.mysql.MysqlProvider;
 import dev.king.universal.sql.SqlProvider;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
