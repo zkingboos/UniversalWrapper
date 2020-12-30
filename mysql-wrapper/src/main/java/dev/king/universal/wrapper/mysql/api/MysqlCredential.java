@@ -25,6 +25,12 @@ public final class MysqlCredential implements UniversalCredential {
     private final @NonNull String user;
     private final @NonNull String password;
 
+    /**
+     * Create {@link MysqlCredential} from a {@link org.bukkit.configuration.ConfigurationSection}
+     *
+     * @param section instance of section
+     * @return credential security
+     */
     public static MysqlCredential fromConfiguration(@NonNull ConfigurationSection section) {
         return builder()
           .hostname(section.getString("hostname"))

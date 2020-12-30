@@ -20,6 +20,14 @@ public class PoolableConnection implements PoolableProvider {
 
     private static final String MYSQL_AUTH_URL = "jdbc:mysql://%s/%s";
 
+    /**
+     * Get connection pool from hikari that offers more availability
+     *
+     * @param credentials    instance of {@link dev.king.universal.shared.api.credential.UniversalCredential} to login into mysql
+     * @param maxConnections passed in MysqlProvider constructor
+     * @return data source
+     * @throws SQLException if driver class doesn't exists
+     */
     public HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections) throws SQLException {
         final HikariConfig config = new HikariConfig();
         final String fullHost = String.format(MYSQL_AUTH_URL,

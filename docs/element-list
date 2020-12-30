@@ -1,0 +1,9 @@
+dev.king.universal.shared
+dev.king.universal.shared.api
+dev.king.universal.shared.api.credential
+dev.king.universal.test
+dev.king.universal.test.bukkit
+dev.king.universal.test.util
+dev.king.universal.wrapper.mysql
+dev.king.universal.wrapper.mysql.api
+dev.king.universal.wrapper.sql
