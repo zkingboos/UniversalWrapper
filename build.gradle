@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'maven'
+}
+
+group 'dev.king.universal'
+version '4.0.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+allprojects {
+    afterEvaluate {
+        apply plugin: 'java-library'
+        apply plugin: 'maven'
+
+        repositories {
+            mavenCentral()
+        }
+
+        dependencies {
+            compileOnly 'org.projectlombok:lombok:1.18.16'
+            annotationProcessor 'org.projectlombok:lombok:1.18.16'
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}
