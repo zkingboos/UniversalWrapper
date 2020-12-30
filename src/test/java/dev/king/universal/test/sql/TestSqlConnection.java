@@ -9,8 +9,7 @@ import java.io.File;
 public final class TestSqlConnection {
 
     public static void main(String[] args) {
-        final UniversalWrapper wrapper = UniversalWrapper.getInstance();
-        final JdbcProvider provider = wrapper.newSqlProvider(
+        final JdbcProvider provider = UniversalWrapper.newSqlProvider(
           new File("C:/Users/fcthe/Desktop/teste.db")
         );
 
