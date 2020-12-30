@@ -23,16 +23,16 @@ Using jitpack:
 <repositories>
     <repository>
         <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
+	<url>https://jitpack.io</url>
+    </repository>
 </repositories>
 
 <dependencies>
     <!--just for sql wrapper (only compile sql not mysql, as in the previous version)-->
     <dependency>
         <groupId>com.github.zkingboos.universalwrapper</groupId>
-	    <artifactId>sql-wrapper</artifactId>
-	    <version>VERSION</version>
+	<artifactId>sql-wrapper</artifactId>
+	<version>VERSION</version>
     </dependency>
     
     <!--just mysql wrapper-->
