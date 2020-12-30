@@ -4,6 +4,8 @@
 
 package dev.king.universal.api;
 
+import lombok.NonNull;
+
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public interface JdbcProvider {
      * @param query   the query of mysql
      * @param objects the objects that will be putted in the prepared statement
      */
-    void update(String query, Object... objects);
+    void update(@NonNull String query, Object... objects);
 
     /**
      * Uses just in select query
@@ -55,7 +57,7 @@ public interface JdbcProvider {
      * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
-    <K> List<K> map(String query, KFunction<ResultSet, K> function, Object... objects);
+    <K> List<K> map(@NonNull String query, @NonNull KFunction<ResultSet, K> function, Object... objects);
 
     /**
      * Uses just in select query
@@ -66,5 +68,5 @@ public interface JdbcProvider {
      * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
-    <K> K query(String query, KFunction<ResultSet, K> consumer, Object... objects);
+    <K> K query(@NonNull String query, @NonNull KFunction<ResultSet, K> consumer, Object... objects);
 }

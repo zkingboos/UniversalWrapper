@@ -9,6 +9,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import dev.king.universal.api.mysql.PoolableProvider;
 import dev.king.universal.api.mysql.UniversalCredential;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class PoolableConnection implements PoolableProvider {
 
     private static final String MYSQL_AUTH_URL = "jdbc:mysql://%s/%s";
 
-    public HikariDataSource obtainDataSource(UniversalCredential credentials, int maxConnections) throws SQLException {
+    public HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections) throws SQLException {
         final HikariConfig config = new HikariConfig();
         final String fullHost = String.format(MYSQL_AUTH_URL,
           credentials.getHostname(),

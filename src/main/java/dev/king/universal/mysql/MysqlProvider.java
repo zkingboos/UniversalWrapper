@@ -10,6 +10,7 @@ import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
 import dev.king.universal.api.mysql.UniversalCredential;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
@@ -59,7 +60,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     }
 
     @Override
-    public <K> K query(String query, KFunction<ResultSet, K> function, Object... objects) {
+    public <K> K query(@NonNull String query, @NonNull KFunction<ResultSet, K> function, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 UniversalUtil.syncObjects(statement, objects);
@@ -76,7 +77,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
         }
     }
 
-    public <K> List<K> map(String query, KFunction<ResultSet, K> function, Object... objects) {
+    public <K> List<K> map(@NonNull String query, @NonNull KFunction<ResultSet, K> function, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 UniversalUtil.syncObjects(statement, objects);
@@ -96,7 +97,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     }
 
     @Override
-    public void update(String query, Object... objects) {
+    public void update(@NonNull String query, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 UniversalUtil.syncObjects(statement, objects);

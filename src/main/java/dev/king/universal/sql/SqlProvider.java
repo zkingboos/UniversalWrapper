@@ -7,6 +7,7 @@ package dev.king.universal.sql;
 import dev.king.universal.UniversalUtil;
 import dev.king.universal.api.JdbcProvider;
 import dev.king.universal.api.KFunction;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.sqlite.JDBC;
@@ -58,12 +59,12 @@ public final class SqlProvider implements JdbcProvider {
 
     @Override
     public JdbcProvider preOpen() {
-        //TODO: doesn't nothing
+        //TODO: don't do nothing cuz this is unnecessary
         return this;
     }
 
     @Override
-    public <K> K query(String query, KFunction<ResultSet, K> consumer, Object... objects) {
+    public <K> K query(@NonNull String query, @NonNull KFunction<ResultSet, K> consumer, Object... objects) {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             UniversalUtil.syncObjects(ps, objects);
 
@@ -79,7 +80,7 @@ public final class SqlProvider implements JdbcProvider {
     }
 
     @Override
-    public void update(String query, Object... objects) {
+    public void update(@NonNull String query, Object... objects) {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             UniversalUtil.syncObjects(statement, objects);
 
@@ -90,7 +91,7 @@ public final class SqlProvider implements JdbcProvider {
     }
 
     @Override
-    public <K> List<K> map(String query, KFunction<ResultSet, K> function, Object... objects) {
+    public <K> List<K> map(@NonNull String query, @NonNull KFunction<ResultSet, K> function, Object... objects) {
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             UniversalUtil.syncObjects(statement, objects);
 

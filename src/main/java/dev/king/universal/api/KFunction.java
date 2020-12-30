@@ -4,6 +4,8 @@
 
 package dev.king.universal.api;
 
+import lombok.NonNull;
+
 import java.util.function.Function;
 
 /**

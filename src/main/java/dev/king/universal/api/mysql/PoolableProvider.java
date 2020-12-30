@@ -5,6 +5,7 @@
 package dev.king.universal.api.mysql;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.NonNull;
 
 import java.sql.SQLException;
 
@@ -21,5 +22,5 @@ public interface PoolableProvider {
      * @return returns an DataSource object, that you can manage it
      * @throws SQLException anything can break here, don't worry.
      */
-    HikariDataSource obtainDataSource(UniversalCredential credentials, int maxConnections) throws SQLException;
+    HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections) throws SQLException;
 }
