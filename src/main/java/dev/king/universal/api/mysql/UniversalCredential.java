@@ -19,10 +19,10 @@ import org.bukkit.configuration.ConfigurationSection;
 @RequiredArgsConstructor
 public final class UniversalCredential {
 
-    private final String hostname;
-    private final String database;
-    private final String user;
-    private final String password;
+    private final @NonNull String hostname;
+    private final @NonNull String database;
+    private final @NonNull String user;
+    private final @NonNull String password;
 
     public static UniversalCredential fromConfiguration(@NonNull ConfigurationSection section) {
         return builder()

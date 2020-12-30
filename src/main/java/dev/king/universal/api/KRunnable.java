@@ -13,8 +13,8 @@ public interface KRunnable extends Runnable {
     default void run() {
         try {
             tryRun();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 

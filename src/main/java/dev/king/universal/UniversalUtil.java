@@ -4,6 +4,9 @@
 
 package dev.king.universal;
 
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -12,6 +15,7 @@ import java.util.Iterator;
 /**
  * This class providers basic methods
  */
+@UtilityClass
 public final class UniversalUtil {
 
     /**
@@ -21,7 +25,7 @@ public final class UniversalUtil {
      * @param objects   is the vararg parameter of your sql query
      * @throws SQLException requires in the JDBC provider
      */
-    public static void syncObjects(PreparedStatement statement, Object... objects) throws SQLException {
+    public void syncObjects(@NonNull PreparedStatement statement, Object... objects) throws SQLException {
         Iterator<Object> iterator = Arrays.stream(objects).iterator();
         for (int i = 1; iterator.hasNext(); i++) {
             statement.setObject(i, iterator.next());

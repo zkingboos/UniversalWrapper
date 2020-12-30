@@ -9,16 +9,16 @@ import dev.king.universal.api.mysql.UniversalCredential;
 import dev.king.universal.mysql.MysqlProvider;
 import dev.king.universal.sql.SqlProvider;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 
 import java.io.File;
 
 /**
  * Abstract provider
  */
+@UtilityClass
 public final class UniversalWrapper {
-
-    @Getter(lazy = true)
-    private static final UniversalWrapper instance = new UniversalWrapper();
 
     /**
      * Creates provider to mysql
@@ -27,7 +27,7 @@ public final class UniversalWrapper {
      * @param maxConnections number of max connections (idle connections are divided by 2)
      * @return instance of mysql provider
      */
-    public JdbcProvider newMysqlProvider(UniversalCredential credentials, int maxConnections) {
+    public JdbcProvider newMysqlProvider(@NonNull UniversalCredential credentials, int maxConnections) {
         return new MysqlProvider(
           credentials, maxConnections
         );
@@ -39,7 +39,7 @@ public final class UniversalWrapper {
      * @param file path of file
      * @return instance of sql provider
      */
-    public JdbcProvider newSqlProvider(File file) {
+    public JdbcProvider newSqlProvider(@NonNull File file) {
         return new SqlProvider(
           file
         );
