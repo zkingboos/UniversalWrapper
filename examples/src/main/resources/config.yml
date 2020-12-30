@@ -1,6 +1,6 @@
 connection:
   mysql:
-    hostname: localhost:3306
+    hostname: "localhost:3306"
     database: test
     user: root
     password:
