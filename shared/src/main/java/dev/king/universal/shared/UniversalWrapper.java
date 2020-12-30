@@ -13,7 +13,7 @@ import lombok.experimental.UtilityClass;
  * @author ykingboos
  */
 @UtilityClass
-@Deprecated(since = "4.0.0-SNAPSHOT")
+@Deprecated
 public final class UniversalWrapper {
 
     @Deprecated
