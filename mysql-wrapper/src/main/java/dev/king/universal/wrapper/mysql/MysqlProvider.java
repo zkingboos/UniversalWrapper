@@ -31,7 +31,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     /**
      * Creates provider to mysql
      *
-     * @param universalCredential login credentials
+     * @param universalCredential login credentials from {@link dev.king.universal.shared.api.credential.UniversalCredential}
      * @param maxConnections      number of max connections (idle connections are divided by 2)
      * @return instance of mysql provider
      */
