@@ -1,0 +1,11 @@
+plugins {
+    id 'java-library'
+    id 'maven'
+}
+
+group 'dev.king.universal'
+version '4.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
