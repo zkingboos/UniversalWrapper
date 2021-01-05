@@ -5,14 +5,10 @@ plugins {
 }
 
 group 'dev.king.universal'
-version '4.0.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
+version '4.0.1-SNAPSHOT'
 
 dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.7.2'
-    implementation project(":shared")
-    api project(":shared")
+    implementation project(":sql-wrapper-bukkit")
+    api project(":sql-wrapper-bukkit")
 }

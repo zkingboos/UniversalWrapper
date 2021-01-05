@@ -17,7 +17,8 @@ A universal jdbc wrapper, helps you to make queries easier, with the simplicity 
 
 Using jitpack:
 
-> Maven 
+> Maven
+
 ```xml
 <repositories>
     <repository>
@@ -44,6 +45,7 @@ Using jitpack:
 ```
 
 > Gradle
+
 ```groovy
 repositories {
     maven { url = 'https://jitpack.io' }
