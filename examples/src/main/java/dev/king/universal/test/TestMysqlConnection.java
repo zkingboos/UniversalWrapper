@@ -4,7 +4,6 @@
 
 package dev.king.universal.test;
 
-
 import dev.king.universal.shared.api.JdbcProvider;
 import dev.king.universal.test.util.UniversalMethod;
 import dev.king.universal.wrapper.mysql.MysqlProvider;

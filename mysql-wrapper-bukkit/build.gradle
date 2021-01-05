@@ -1,5 +1,8 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
     id 'java-library'
+    id 'java'
+    id 'maven'
 }
 
 group 'dev.king.universal'
@@ -13,6 +16,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT'
-    api project(":mysql-wrapper")
-    api project(":sql-wrapper")
+    implementation 'com.zaxxer:HikariCP:3.4.5'
+    implementation project(":shared")
+    api project(":shared")
 }
