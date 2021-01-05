@@ -28,17 +28,31 @@ Using jitpack:
 </repositories>
 
 <dependencies>
-    <!--just for sql wrapper (only compile sql not mysql, as in the previous version)-->
+    <!--just for sql wrapper (only compile sql not mysql, as in the previous version) (heavy)-->
     <dependency>
         <groupId>com.github.zkingboos.universalwrapper</groupId>
 	<artifactId>sql-wrapper</artifactId>
 	<version>VERSION</version>
     </dependency>
+
+    <!--just for sql wrapper (only compile sql not mysql, as in the previous version) (light)-->
+    <dependency>
+        <groupId>com.github.zkingboos.universalwrapper</groupId>
+	<artifactId>sql-wrapper-bukkit</artifactId>
+	<version>VERSION</version>
+    </dependency>
     
-    <!--just mysql wrapper-->
+    <!--just mysql wrapper (heavy)-->
     <dependency>
         <groupId>com.github.zkingboos.universalwrapper</groupId>
         <artifactId>mysql-wrapper</artifactId>
+        <version>VERSION</version>
+    </dependency>
+
+    <!--just mysql wrapper (light)-->
+    <dependency>
+        <groupId>com.github.zkingboos.universalwrapper</groupId>
+        <artifactId>mysql-wrapper-bukkit</artifactId>
         <version>VERSION</version>
     </dependency>
 </dependencies>
@@ -46,17 +60,23 @@ Using jitpack:
 
 > Gradle
 
-```groovy
+```gradle
 repositories {
     maven { url = 'https://jitpack.io' }
 }
 
 dependencies {
-    // Just sql-wrapper
+    // Just sql-wrapper (Heavy)
     implementation 'com.github.zkingboos.universalwrapper:sql-wrapper:VERSION'
+
+    // Just sql-wrapper (Light)
+    implementation 'com.github.zkingboos.universalwrapper:sql-wrapper-bukkit:VERSION'
     
-    // Just mysql-wrapper
+    // Just mysql-wrapper (Heavy)
     implementation 'com.github.zkingboos.universalwrapper:mysql-wrapper:VERSION'
+    
+    // Just mysql-wrapper (Light)
+    implementation 'com.github.zkingboos.universalwrapper:mysql-wrapper-bukkit:VERSION'
 }
 ```
 
