@@ -1,6 +1,8 @@
 rootProject.name = 'UniversalWrapper'
-include 'mysql-wrapper'
-include 'sql-wrapper'
+include 'mysql-wrapper-bukkit'
+include 'sql-wrapper-bukkit'
 include 'examples'
 include 'shared'
+include 'sql-wrapper'
+include 'mysql-wrapper'
 

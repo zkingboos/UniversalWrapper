@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id 'java'
     id 'maven'
 }
 
@@ -9,4 +8,9 @@ version '4.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+dependencies {
+    implementation project(":shared")
+    api project(":shared")
 }

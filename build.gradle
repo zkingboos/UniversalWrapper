@@ -4,13 +4,11 @@ plugins {
 }
 
 group 'dev.king.universal'
-version '4.0.0-SNAPSHOT'
+version '4.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 allprojects {
     afterEvaluate {
-        apply plugin: 'java-library'
-        apply plugin: 'maven'
 
         repositories {
             mavenCentral()
@@ -25,5 +23,9 @@ allprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
+    }
+
+    tasks.withType(Jar) {
+        destinationDirectory.set(file("$rootDir/build/"))
     }
 }
