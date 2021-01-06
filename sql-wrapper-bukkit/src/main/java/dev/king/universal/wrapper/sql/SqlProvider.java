@@ -6,7 +6,10 @@ package dev.king.universal.wrapper.sql;
 
 import dev.king.universal.shared.UniversalUtil;
 import dev.king.universal.shared.api.JdbcProvider;
-import dev.king.universal.shared.api.KFunction;
+import dev.king.universal.shared.api.batch.ComputedBatchQuery;
+import dev.king.universal.shared.api.batch.impl.UnitComputedBatchQuery;
+import dev.king.universal.shared.api.functional.SafetyBiConsumer;
+import dev.king.universal.shared.api.functional.SafetyFunction;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -14,6 +17,7 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -76,7 +80,7 @@ public final class SqlProvider implements JdbcProvider {
     }
 
     @Override
-    public <K> K query(@NonNull String query, @NonNull KFunction<ResultSet, K> consumer, Object... objects) {
+    public <K> K query(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> consumer, Object... objects) {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             UniversalUtil.syncObjects(ps, objects);
 
@@ -103,10 +107,9 @@ public final class SqlProvider implements JdbcProvider {
     }
 
     @Override
-    public <K> List<K> map(@NonNull String query, @NonNull KFunction<ResultSet, K> function, Object... objects) {
+    public <K> List<K> map(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> function, Object... objects) {
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             UniversalUtil.syncObjects(statement, objects);
-
             try (ResultSet set = statement.executeQuery()) {
                 List<K> paramResult = new ArrayList<>();
                 while (set.next()) {
@@ -118,6 +121,20 @@ public final class SqlProvider implements JdbcProvider {
         } catch (SQLException $) {
             $.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public <T> int[] batch(@NonNull String query, SafetyBiConsumer<T, ComputedBatchQuery> batchFunction, Collection<T> collection) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            final ComputedBatchQuery batchQuery = new UnitComputedBatchQuery(statement);
+            for (T object : collection) {
+                batchFunction.accept(object, batchQuery);
+            }
+            return statement.executeBatch();
+        } catch (SQLException $) {
+            $.printStackTrace();
+            return new int[0];
         }
     }
 }

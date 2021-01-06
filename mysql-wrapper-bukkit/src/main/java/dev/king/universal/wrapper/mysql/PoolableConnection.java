@@ -49,6 +49,7 @@ public class PoolableConnection implements PoolableProvider {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("useServerPrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.addDataSourceProperty("rewriteBatchedStatements", "true");
 
         final HikariDataSource dataSource = new HikariDataSource(config);
         dataSource.setLoginTimeout(3);
