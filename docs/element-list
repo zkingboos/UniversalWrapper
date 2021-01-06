@@ -1,0 +1,12 @@
+dev.king.universal.example
+dev.king.universal.example.bukkit
+dev.king.universal.example.util
+dev.king.universal.shared
+dev.king.universal.shared.api
+dev.king.universal.shared.api.batch
+dev.king.universal.shared.api.batch.impl
+dev.king.universal.shared.api.credential
+dev.king.universal.shared.api.functional
+dev.king.universal.wrapper.mysql
+dev.king.universal.wrapper.mysql.api
+dev.king.universal.wrapper.sql
