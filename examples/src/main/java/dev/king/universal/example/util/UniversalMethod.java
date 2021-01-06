@@ -41,9 +41,11 @@ public final class UniversalMethod {
         /*
          * To insert a collection object
          */
-        provider.batch("insert into king(name) values (?)", (entity, batchQuery) -> {
+        final int[] result = provider.batch("insert into king(name) values (?)", (entity, batchQuery) -> {
             batchQuery.compute(entity.getName());
         }, testEntities);
+
+        System.out.println("Batched " + result.length);
 
         /*
          * In the bellow example, we used an simply query to select one user from table
