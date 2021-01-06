@@ -22,9 +22,7 @@ public final class TestMysqlBukkitConnection extends JavaPlugin {
 
         assert section != null;
         final UniversalCredential universalCredential = MysqlCredential.fromConfiguration(section);
-        final JdbcProvider provider = MysqlProvider
-          .from(universalCredential, 2)
-          .preOpen();
+        final JdbcProvider provider = MysqlProvider.from(universalCredential, 2);
 
         UniversalMethod.dispatchProvider(provider);
     }

@@ -30,6 +30,7 @@ public interface JdbcProvider {
      *
      * @return instance of current {@link dev.king.universal.shared.api.JdbcProvider}
      */
+    @Deprecated
     JdbcProvider preOpen();
 
     /**

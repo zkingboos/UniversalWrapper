@@ -6,15 +6,15 @@ package dev.king.universal.wrapper.mysql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import dev.king.universal.shared.UniversalUtil;
-import dev.king.universal.shared.api.batch.ComputedBatchQuery;
 import dev.king.universal.shared.api.JdbcProvider;
+import dev.king.universal.shared.api.batch.ComputedBatchQuery;
 import dev.king.universal.shared.api.batch.impl.UnitComputedBatchQuery;
 import dev.king.universal.shared.api.credential.UniversalCredential;
 import dev.king.universal.shared.api.functional.SafetyBiConsumer;
 import dev.king.universal.shared.api.functional.SafetyFunction;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,12 +25,18 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
 public final class MysqlProvider extends PoolableConnection implements JdbcProvider {
 
-    private final UniversalCredential credentials;
+    private final UniversalCredential credential;
     private final int maxConnections;
-    private HikariDataSource source;
+    private final HikariDataSource source;
+
+    @SneakyThrows
+    public MysqlProvider(@NonNull UniversalCredential credential, int maxConnections) {
+        this.credential = credential;
+        this.maxConnections = maxConnections;
+        this.source = obtainDataSource(credential, maxConnections);
+    }
 
     /**
      * Creates provider to mysql
@@ -71,11 +77,6 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
 
     @Override
     public JdbcProvider preOpen() {
-        try {
-            source = obtainDataSource(credentials, maxConnections);
-        } catch (SQLException $) {
-            $.printStackTrace();
-        }
         return this;
     }
 
