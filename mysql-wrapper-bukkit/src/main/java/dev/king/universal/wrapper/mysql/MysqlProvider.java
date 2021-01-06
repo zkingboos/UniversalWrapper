@@ -6,9 +6,12 @@ package dev.king.universal.wrapper.mysql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import dev.king.universal.shared.UniversalUtil;
+import dev.king.universal.shared.api.batch.ComputedBatchQuery;
 import dev.king.universal.shared.api.JdbcProvider;
-import dev.king.universal.shared.api.KFunction;
+import dev.king.universal.shared.api.batch.impl.UnitComputedBatchQuery;
 import dev.king.universal.shared.api.credential.UniversalCredential;
+import dev.king.universal.shared.api.functional.SafetyBiConsumer;
+import dev.king.universal.shared.api.functional.SafetyFunction;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -76,7 +80,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     }
 
     @Override
-    public <K> K query(@NonNull String query, @NonNull KFunction<ResultSet, K> function, Object... objects) {
+    public <K> K query(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> function, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 UniversalUtil.syncObjects(statement, objects);
@@ -93,7 +97,7 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
         }
     }
 
-    public <K> List<K> map(@NonNull String query, @NonNull KFunction<ResultSet, K> function, Object... objects) {
+    public <K> List<K> map(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> function, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 UniversalUtil.syncObjects(statement, objects);
@@ -105,7 +109,6 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
                     return paramList;
                 }
             }
-
         } catch (SQLException $) {
             $.printStackTrace();
             return null;
@@ -121,6 +124,22 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
             }
         } catch (SQLException $) {
             $.printStackTrace();
+        }
+    }
+
+    @Override
+    public <T> int[] batch(@NonNull String query, SafetyBiConsumer<T, ComputedBatchQuery> batchFunction, Collection<T> collection) {
+        try (Connection connection = source.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                final ComputedBatchQuery batchQuery = new UnitComputedBatchQuery(statement);
+                for (T object : collection) {
+                    batchFunction.accept(object, batchQuery);
+                }
+                return statement.executeBatch();
+            }
+        } catch (SQLException $) {
+            $.printStackTrace();
+            return new int[0];
         }
     }
 }
