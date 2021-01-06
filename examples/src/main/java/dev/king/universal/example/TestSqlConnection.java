@@ -11,7 +11,7 @@ public final class TestSqlConnection {
     public static void main(String[] args) {
         final JdbcProvider provider = SqlProvider.from(
           new File("D:/test.db")
-        ).preOpen(); //you don't need exactly call this method, only for demonstration
+        );
 
         UniversalMethod.dispatchProvider(provider);
     }

@@ -19,7 +19,7 @@ public final class TestMysqlConnection {
             "root",
             ""),
           2
-        ).preOpen();
+        );
 
         UniversalMethod.dispatchProvider(provider);
     }
