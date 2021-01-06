@@ -15,6 +15,6 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT'
     implementation project(":mysql-wrapper")
     implementation project(":sql-wrapper")
-    api project(":mysql-wrapper")
-    api project(":sql-wrapper")
+    api project(":mysql-wrapper-bukkit")
+    api project(":sql-wrapper-bukkit")
 }

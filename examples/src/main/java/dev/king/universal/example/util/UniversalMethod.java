@@ -34,7 +34,7 @@ public final class UniversalMethod {
         provider.update("insert into king (name) values (?)", "y");
 
         final List<TestEntity> testEntities = new ArrayList<>();
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 100000; i++) {
             testEntities.add(new TestEntity(UUID.randomUUID().toString()));
         }
 

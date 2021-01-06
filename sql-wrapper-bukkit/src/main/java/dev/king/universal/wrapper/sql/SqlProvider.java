@@ -125,13 +125,19 @@ public final class SqlProvider implements JdbcProvider {
     }
 
     @Override
+    @SneakyThrows
     public <T> int[] batch(@NonNull String query, SafetyBiConsumer<T, ComputedBatchQuery> batchFunction, Collection<T> collection) {
+        final boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             final ComputedBatchQuery batchQuery = new UnitComputedBatchQuery(statement);
             for (T object : collection) {
                 batchFunction.accept(object, batchQuery);
             }
-            return statement.executeBatch();
+            final int[] results = statement.executeBatch();
+            connection.commit();
+            connection.setAutoCommit(autoCommit);
+            return results;
         } catch (SQLException $) {
             $.printStackTrace();
             return new int[0];
