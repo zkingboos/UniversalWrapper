@@ -7,9 +7,11 @@ A universal jdbc wrapper, helps you to make queries easier, with the simplicity 
 ## Summary
 
 * [Installation](#installation)
+* [Modules](#modules)
 * [Documentation](#documentation)
 * [Usage](#usage)
 * [Contributing](#contributing)
+* [Contributors](#contributors)
 
 ## Installation
 
@@ -79,6 +81,17 @@ dependencies {
     implementation 'com.github.zkingboos.universalwrapper:mysql-wrapper-bukkit:VERSION'
 }
 ```
+<!--From https://github.com/LorenzooG/jplank/-->
+## Modules
+| Name                                             | Description                                                          		|
+| ------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| [shared](shared)                                 | All shared sources for linking the components                        		|
+| [sql-wrapper](sql-wrapper)                       | Sql provider compiled with all dependencies         				|
+| [sql-wrapper-bukkit](sql-wrapper-bukkit)         | Sql provider for bukkit applications, only includes the necessary dependencies	|
+| [mysql-wrapper](mysql-wrapper)                   | Mysql provider compiled with all dependencies					| 
+| [mysql-wrapper-bukkit](mysql-wrapper-bukkit)     | Mysql provider for bukkit applications, only includes the necessary dependencies	|
+| [docs](docs)                                     | The project documentation for github-pages						|
+| [examples](examples)                             | Examples for the most abstract cases						|
 
 ## Documentation
 
@@ -86,10 +99,15 @@ You can see project's documentation [here](https://zkingboos.github.io/Universal
 
 ## Usage
 
-Look [here](https://github.com/zkingboos/UniversalWrapper/tree/master/examples) for detailed examples!
+Look [here](examples) for detailed examples!
 
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+## Contributors
+[<img alt="zkingboos" src="https://avatars3.githubusercontent.com/u/42500187?v=4&s=117&width=117">](https://github.com/zkingboos) |
+:---:|
+[zkingboos](https://github.com/zkingboos)|
