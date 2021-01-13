@@ -4,8 +4,8 @@ plugins {
     id 'maven'
 }
 
-group 'dev.king.universal'
-version '4.0.3-SNAPSHOT'
+//group 'dev.king.universal'
+//version '4.0.3-SNAPSHOT'
 
 repositories {
     mavenCentral()
