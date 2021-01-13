@@ -50,8 +50,9 @@ public interface JdbcProvider {
      *
      * @param query   the query of mysql
      * @param objects the objects that will be putted in the prepared statement
+     * @return query response
      */
-    void update(@NonNull String query, Object... objects);
+    int update(@NonNull String query, Object... objects);
 
     /**
      * Uses just in select query

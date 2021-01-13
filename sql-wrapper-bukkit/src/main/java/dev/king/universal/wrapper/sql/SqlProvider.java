@@ -96,13 +96,13 @@ public final class SqlProvider implements JdbcProvider {
     }
 
     @Override
-    public void update(@NonNull String query, Object... objects) {
+    public int update(@NonNull String query, Object... objects) {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             UniversalUtil.syncObjects(statement, objects);
-
-            statement.executeUpdate();
+            return statement.executeUpdate();
         } catch (SQLException $) {
             $.printStackTrace();
+            return -1;
         }
     }
 
