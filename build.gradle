@@ -3,13 +3,18 @@ plugins {
     id 'maven'
 }
 
-group 'dev.king.universal'
-version '4.0.3-SNAPSHOT'
+def groupProject = 'dev.king.universal'
+def versionProject = '4.0.4-SNAPSHOT'
+
+group = groupProject
+version = versionProject
 sourceCompatibility = 1.8
 
 allprojects {
-    afterEvaluate {
+    group = groupProject
+    version = versionProject
 
+    afterEvaluate {
         repositories {
             mavenCentral()
             maven { url = "https://jitpack.io" }

@@ -117,14 +117,15 @@ public final class MysqlProvider extends PoolableConnection implements JdbcProvi
     }
 
     @Override
-    public void update(@NonNull String query, Object... objects) {
+    public int update(@NonNull String query, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 UniversalUtil.syncObjects(statement, objects);
-                statement.executeUpdate();
+                return statement.executeUpdate();
             }
         } catch (SQLException $) {
             $.printStackTrace();
+            return -1;
         }
     }
 
