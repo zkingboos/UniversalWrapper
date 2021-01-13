@@ -2,7 +2,7 @@ name: 'gradle-workflow'
 
 on:
   push:
-    branches: [ test ]
+    branches: [ master ]
 
 jobs:
   build:
