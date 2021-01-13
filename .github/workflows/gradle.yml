@@ -16,6 +16,6 @@ jobs:
           java-version: 1.8
       - name: Setup project version
         run: |
-          export PROJECT_VERSION=$(./gradlw projectVersion --quiet)
+          export PROJECT_VERSION=$(./gradlew projectVersion --quiet)
           echo "Debug maven gradle version ${PROJECT_VERSION}"
           echo "PROJECT_VERSION=${PROJECT_VERSION}" >> $GITHUB_ENV
