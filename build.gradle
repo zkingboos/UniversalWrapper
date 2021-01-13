@@ -34,3 +34,9 @@ allprojects {
         destinationDirectory.set(file("$rootDir/build/"))
     }
 }
+
+task projectVersion {
+    doLast {
+        println project.version
+    }
+}
