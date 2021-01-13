@@ -34,6 +34,7 @@ jobs:
           tag_name: ${{ env.PROJECT_VERSION }}
           release_name: "${{ format('{0} [Release #{1}]', github.event.head_commit.message, github.run_id) }}"
           body: |
+            open in [jitpack.io][jitpack-url]
             [jitpack-url]: https://jitpack.io/#${{ github.repository }}/${{ env.PROJECT_VERSION }}
           draft: false
           prerelease: false
