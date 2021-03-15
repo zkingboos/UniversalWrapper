@@ -2,7 +2,7 @@
  * Copyright (c) 2020 yking-projects
  */
 
-package dev.king.universal.example.util;
+package dev.king.universal.example.entity;
 
 import lombok.Data;
 

@@ -4,7 +4,7 @@
 
 package dev.king.universal.example.bukkit;
 
-import dev.king.universal.example.util.UniversalMethod;
+import dev.king.universal.example.DispatchMethod;
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.wrapper.mysql.MySQLProvider;
@@ -34,6 +34,6 @@ public final class TestMysqlBukkitConnection extends JavaPlugin {
         DefaultSQLSupport provider = MySQLProvider.from(universalCredential, 2);
 
         //provider = MySQLProvider.fromPlugin(this, "connection.mysql", 2); also can use this method
-        UniversalMethod.dispatchProvider(provider);
+        DispatchMethod.dispatchProvider(provider);
     }
 }

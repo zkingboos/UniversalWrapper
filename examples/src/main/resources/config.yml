@@ -1,6 +1,6 @@
 connection:
   mysql:
     hostname: "localhost:3306"
-    database: test
+    database: universalwrapper
     user: root
-    password:
+    password: test

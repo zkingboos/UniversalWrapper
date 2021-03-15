@@ -1,6 +1,5 @@
 package dev.king.universal.example;
 
-import dev.king.universal.example.util.UniversalMethod;
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.wrapper.sql.SQLProvider;
 
@@ -16,6 +15,6 @@ public final class TestSqlConnection {
      */
     public static void main(String[] args) {
         final DefaultSQLSupport provider = SQLProvider.from(new File("D:/test.db"));
-        UniversalMethod.dispatchProvider(provider);
+        DispatchMethod.dispatchProvider(provider);
     }
 }

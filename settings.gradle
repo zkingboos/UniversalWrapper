@@ -1,10 +1,10 @@
 rootProject.name = 'UniversalWrapper'
+include 'shared'
 include 'mysql-wrapper-bukkit'
 include 'sql-wrapper-bukkit'
-include 'examples'
-include 'shared'
-include 'sql-wrapper'
 include 'mysql-wrapper'
+include 'sql-wrapper'
+include 'examples'
 include 'processor'
 include 'sqlreader-extension'
 
