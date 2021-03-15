@@ -1,18 +1,21 @@
 package dev.king.universal.example;
 
 import dev.king.universal.example.util.UniversalMethod;
-import dev.king.universal.shared.api.JdbcProvider;
-import dev.king.universal.wrapper.sql.SqlProvider;
+import dev.king.universal.shared.DefaultSQLSupport;
+import dev.king.universal.wrapper.sql.SQLProvider;
 
 import java.io.File;
 
 public final class TestSqlConnection {
 
+    /**
+     * Initialize sql local connection, using UniversalWrapper project
+     * Call {@link SQLProvider#from(File)} with already created and treated {@link File} instance (you need to create manually the file, if still doesn't exists)
+     *
+     * @param args program arguments
+     */
     public static void main(String[] args) {
-        final JdbcProvider provider = SqlProvider.from(
-          new File("D:/test.db")
-        );
-
+        final DefaultSQLSupport provider = SQLProvider.from(new File("D:/test.db"));
         UniversalMethod.dispatchProvider(provider);
     }
 }
