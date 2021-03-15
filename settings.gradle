@@ -5,4 +5,6 @@ include 'examples'
 include 'shared'
 include 'sql-wrapper'
 include 'mysql-wrapper'
+include 'processor'
+include 'sqlreader-extension'
 

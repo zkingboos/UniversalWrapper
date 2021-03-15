@@ -6,7 +6,6 @@ plugins {
 //version '4.0.3-SNAPSHOT'
 
 repositories {
-    mavenCentral()
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
 }
@@ -18,3 +17,4 @@ dependencies {
     api project(":mysql-wrapper-bukkit")
     api project(":sql-wrapper-bukkit")
 }
+

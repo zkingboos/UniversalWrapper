@@ -8,8 +8,9 @@ plugins {
 //group 'dev.king.universal'
 //version '4.0.3-SNAPSHOT'
 
+repositories {
+}
+
 dependencies {
-    implementation 'org.xerial:sqlite-jdbc:3.7.2'
-    implementation project(":sql-wrapper-bukkit")
-    api project(":sql-wrapper-bukkit")
+    implementation 'com.squareup:javapoet:1.13.0'
 }
