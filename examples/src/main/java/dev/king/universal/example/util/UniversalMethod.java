@@ -4,7 +4,8 @@
 
 package dev.king.universal.example.util;
 
-import dev.king.universal.shared.api.JdbcProvider;
+import dev.king.universal.shared.DefaultSQLSupport;
+import dev.king.universal.shared.functional.SafetyFunction;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.java.Log;
@@ -17,14 +18,19 @@ import java.util.UUID;
 @UtilityClass
 public final class UniversalMethod {
 
-    public void dispatchProvider(@NonNull JdbcProvider provider) {
+    /**
+     * Example from "unreal" connection step (just for test)
+     *
+     * @param provider instance of support sql provider
+     */
+    public void dispatchProvider(@NonNull DefaultSQLSupport provider) {
         if (!provider.openConnection()) {
             log.severe("No database connection has been established");
             return;
         }
 
         /*
-         * The method update is used to send query that you don't need returns
+         * The method update is used to send query that you don't needs returns
          */
         provider.update("create table if not exists king(name varchar(255))");
 
@@ -48,21 +54,22 @@ public final class UniversalMethod {
         System.out.println("Batched " + result.length);
 
         /*
-         * In the bellow example, we used an simply query to select one user from table
-         * The first field is the query, the second field is the lambda set, on third field
-         * Is the query objects
+         * In the bellow example, we used an simply query to select one user from table, following these instructions:
+         * String query: query that will sent to driver connector </br>
+         * SafetyFunction<ResultSet, K> consumer: {@link java.util.stream.Stream}({@link FunctionalInterface}) class, currently used to parse result set to a object </br>
+         * Object... objects: their respectively fields are set in order, represented by a '?'
          */
         final TestEntity entity = provider.query(
-          "select * from king where name = ?",
+          "select name from king where name = ?",
           set -> new TestEntity(set.getString("name")),
           "y"
         );
 
         /*
-         * Get a map of objects
+         * Map a collection's object, returned from {@link DefaultSQLSupport#map(String, SafetyFunction, Object...)}
          */
         final List<TestEntity> entities = provider.map(
-          "select * from king",
+          "select name from king",
           set -> new TestEntity(set.getString("name"))
         );
 

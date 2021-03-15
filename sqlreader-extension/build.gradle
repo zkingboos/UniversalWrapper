@@ -6,7 +6,11 @@ plugins {
 }
 
 //group 'dev.king.universal'
-//version '4.0.3-SNAPSHOT'
+//version '4.0.5.1-SNAPSHOT'
 
 repositories {
 }
+
+dependencies {
+}
+
