@@ -5,6 +5,8 @@ import dev.king.universal.processor.annotation.PrimaryKey;
 import dev.king.universal.processor.annotation.Table;
 import dev.king.universal.processor.annotation.Unique;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -20,6 +22,5 @@ public class UserObject {
     private final World world;
     @Column
     @Unique
-    private final Player teupai;
-
+    private final Player player;
 }

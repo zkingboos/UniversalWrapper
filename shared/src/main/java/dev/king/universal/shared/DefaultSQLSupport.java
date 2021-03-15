@@ -5,16 +5,18 @@
 package dev.king.universal.shared;
 
 import dev.king.universal.shared.batch.ComputedBatchQuery;
+import dev.king.universal.shared.extension.ExtensionSupport;
 import dev.king.universal.shared.functional.SafetyBiConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import lombok.NonNull;
+import org.intellij.lang.annotations.Language;
 
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * The interface has provide basic methods
+ * Default support provider for SQL & MYSQL drivers.
  */
 public interface DefaultSQLSupport extends AutoCloseable {
 
@@ -41,10 +43,10 @@ public interface DefaultSQLSupport extends AutoCloseable {
      * Uses just in create, delete, insert and update queries
      *
      * @param query   the query of mysql
-     * @param objects the objects that will be putted in the prepared statement
+     * @param objects the objects that will be put in the prepared statement
      * @return query response
      */
-    int update(@NonNull String query, Object... objects);
+    int update(@Language("MySQL") @NonNull String query, Object... objects);
 
     /**
      * Uses just in select query
@@ -55,7 +57,7 @@ public interface DefaultSQLSupport extends AutoCloseable {
      * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
-    <K> List<K> map(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> function, Object... objects);
+    <K> List<K> map(@Language("MySQL") @NonNull String query, @NonNull SafetyFunction<ResultSet, K> function, Object... objects);
 
     /**
      * Uses just in select query
@@ -66,7 +68,7 @@ public interface DefaultSQLSupport extends AutoCloseable {
      * @param <K>      the generic type, used to return your prefer value
      * @return returns a optional value, applied in function parameter
      */
-    <K> K query(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> consumer, Object... objects);
+    <K> K query(@Language("MySQL") @NonNull String query, @NonNull SafetyFunction<ResultSet, K> consumer, Object... objects);
 
     /**
      * Execute massive update
@@ -77,7 +79,7 @@ public interface DefaultSQLSupport extends AutoCloseable {
      * @param <T>           type of objects
      * @return result of batch
      */
-    <T> int[] batch(@NonNull String query, SafetyBiConsumer<T, ComputedBatchQuery> batchFunction, Collection<T> collection);
+    <T> int[] batch(@Language("MySQL") @NonNull String query, SafetyBiConsumer<T, ComputedBatchQuery> batchFunction, Collection<T> collection);
 
     /**
      * Closes the connection, but automatically
@@ -85,5 +87,14 @@ public interface DefaultSQLSupport extends AutoCloseable {
     @Override
     default void close() {
         closeConnection();
+    }
+
+    /**
+     * Install extension, for class modifications and others things
+     *
+     * @return wrapper instance
+     */
+    default DefaultSQLSupport install(@NonNull ExtensionSupport extensionSupport) {
+        return extensionSupport.selfInstall(this);
     }
 }
