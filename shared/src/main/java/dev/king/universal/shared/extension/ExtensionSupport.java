@@ -1,18 +1,23 @@
 package dev.king.universal.shared.extension;
 
 import dev.king.universal.shared.DefaultSQLSupport;
-import lombok.Data;
+import dev.king.universal.shared.properties.PropertiesSupport;
+import dev.king.universal.shared.properties.SegmentSupport;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import org.jetbrains.annotations.NotNull;
 
-@Data
-@Log(topic = "Extension Handler")
-public abstract class ExtensionSupport {
+@Log(topic = "ExtensionSupport")
+public final class ExtensionSupport extends SegmentSupport<BaseExtension> {
 
-    private final String name;
+    public ExtensionSupport(@NonNull DefaultSQLSupport defaultSQLSupport, PropertiesSupport propertiesSupport) {
+        super(defaultSQLSupport, propertiesSupport);
+    }
 
-    public DefaultSQLSupport selfInstall(@NonNull DefaultSQLSupport support) {
-        log.info(String.format("Attempting to install extension '%s'", name));
-        return support;
+    @Override
+    public PropertiesSupport install(@NotNull BaseExtension baseExtension) {
+        log.info(String.format("Attempting to install '%s' delegate extension.%n", baseExtension.getName()));
+        setDefaultSQLSupport(baseExtension.setDefaultSQLSupport(getDefaultSQLSupport()));
+        return getPropertiesSupport();
     }
 }

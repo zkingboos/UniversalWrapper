@@ -23,5 +23,6 @@ dependencies {
     testImplementation project(":mysql-wrapper")
     testCompileOnly 'org.projectlombok:lombok:1.18.16'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.21'
 }
 
