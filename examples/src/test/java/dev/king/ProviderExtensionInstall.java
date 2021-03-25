@@ -11,13 +11,16 @@ public class ProviderExtensionInstall {
     public static void main(String[] args) {
         final DefaultSQLSupport sqlSupport = MySQLProvider
           .from("localhost:3306", "universalwrapper", "root", "test", 2)
-          .install(new SQLReaderExtension());
+          .properties()
+          .extensions()
+          .install(new SQLReaderExtension())
+          .build();
 
-        if(!sqlSupport.openConnection()) {
+        if (!sqlSupport.openConnection()) {
             log.severe("Cannot make database connection");
             return;
         }
 
-        sqlSupport.update("king.create");
+        sqlSupport.update("create table if not exists king(name varchar(255))");
     }
 }

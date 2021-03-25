@@ -29,6 +29,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -78,7 +79,7 @@ public final class MySQLProvider extends PoolableConnection implements DefaultSQ
      * @return instance of mysql provider
      */
     public static DefaultSQLSupport fromPlugin(@NonNull Plugin plugin, @NonNull String path, int maxConnections) {
-        return fromConfiguration(plugin.getConfig().getConfigurationSection(path), maxConnections);
+        return fromConfiguration(Objects.requireNonNull(plugin.getConfig().getConfigurationSection(path)), maxConnections);
     }
 
     /**
