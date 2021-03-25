@@ -5,9 +5,9 @@
 package dev.king.universal.shared;
 
 import dev.king.universal.shared.batch.ComputedBatchQuery;
-import dev.king.universal.shared.extension.ExtensionSupport;
 import dev.king.universal.shared.functional.SafetyBiConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
+import dev.king.universal.shared.properties.PropertiesSupport;
 import lombok.NonNull;
 import org.intellij.lang.annotations.Language;
 
@@ -89,12 +89,7 @@ public interface DefaultSQLSupport extends AutoCloseable {
         closeConnection();
     }
 
-    /**
-     * Install extension, for class modifications and others things
-     *
-     * @return wrapper instance
-     */
-    default DefaultSQLSupport install(@NonNull ExtensionSupport extensionSupport) {
-        return extensionSupport.selfInstall(this);
+    default PropertiesSupport properties() {
+        return new PropertiesSupport(this);
     }
 }
