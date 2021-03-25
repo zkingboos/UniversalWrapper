@@ -18,6 +18,6 @@ public class ProviderExtensionInstall {
             return;
         }
 
-        sqlSupport.update("create table if not exists king(name varchar(255))");
+        sqlSupport.update("king.create");
     }
 }
