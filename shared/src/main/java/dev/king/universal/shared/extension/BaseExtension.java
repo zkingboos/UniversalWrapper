@@ -1,12 +1,16 @@
 package dev.king.universal.shared.extension;
 
 import dev.king.universal.shared.DefaultSQLSupport;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
-public interface BaseExtension extends DefaultSQLSupport {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public abstract class BaseExtension extends DefaultSQLSupport {
 
-    String getName();
+    private final String name;
 
-    BaseExtension setDefaultSQLSupport(@NonNull DefaultSQLSupport defaultSQLSupport);
+    public abstract BaseExtension setDefaultSQLSupport(@NonNull DefaultSQLSupport defaultSQLSupport);
 
 }

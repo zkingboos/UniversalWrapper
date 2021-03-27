@@ -11,6 +11,7 @@ import dev.king.universal.shared.functional.SafetyBiConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import dev.king.universal.shared.implementation.batch.UnitComputedBatchQuery;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 
@@ -21,7 +22,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-public final class SQLProvider implements DefaultSQLSupport {
+@EqualsAndHashCode(callSuper = true)
+public final class SQLProvider extends DefaultSQLSupport {
 
     private final File output;
     private Connection connection;

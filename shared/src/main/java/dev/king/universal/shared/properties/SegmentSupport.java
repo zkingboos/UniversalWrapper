@@ -10,6 +10,7 @@ public abstract class SegmentSupport<Segment> extends PropertiesSupport {
 
     @Delegate
     private final PropertiesSupport propertiesSupport;
+
     public SegmentSupport(@NonNull DefaultSQLSupport defaultSQLSupport, PropertiesSupport propertiesSupport) {
         super(defaultSQLSupport);
         this.propertiesSupport = propertiesSupport;

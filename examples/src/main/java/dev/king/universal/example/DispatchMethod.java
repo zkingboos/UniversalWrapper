@@ -4,7 +4,6 @@
 
 package dev.king.universal.example;
 
-import dev.king.universal.example.entity.TestEntity;
 import dev.king.universal.shared.DefaultSQLSupport;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

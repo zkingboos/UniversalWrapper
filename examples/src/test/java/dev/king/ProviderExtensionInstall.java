@@ -13,7 +13,7 @@ public class ProviderExtensionInstall {
           .from("localhost:3306", "universalwrapper", "root", "test", 2)
           .properties()
           .extensions()
-          .install(new SQLReaderExtension())
+          .install(SQLReaderExtension.from("sql"))
           .build();
 
         if (!sqlSupport.openConnection()) {
@@ -21,6 +21,6 @@ public class ProviderExtensionInstall {
             return;
         }
 
-        sqlSupport.update("create table if not exists king(name varchar(255))");
+        sqlSupport.update("user.sla.fodase");
     }
 }

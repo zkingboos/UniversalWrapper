@@ -9,14 +9,12 @@ import com.zaxxer.hikari.HikariDataSource;
 import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.wrapper.mysql.PoolableProvider;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.sql.SQLException;
 
 @Data
-public class PoolableConnection implements PoolableProvider {
+public class DefaultPoolableConnection implements PoolableProvider {
 
     private static final String MYSQL_AUTH_URL = "jdbc:mysql://%s/%s";
 
@@ -29,29 +27,29 @@ public class PoolableConnection implements PoolableProvider {
      * @throws SQLException if driver class doesn't exists
      */
     public HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections) throws SQLException {
-        final HikariConfig config = new HikariConfig();
+        final HikariConfig configuration = new HikariConfig();
         final String fullHost = String.format(MYSQL_AUTH_URL,
           credentials.getHostname(),
           credentials.getDatabase()
         );
 
-        config.setDriverClassName("com.mysql.jdbc.Driver");
-        config.setJdbcUrl(fullHost);
-        config.setUsername(credentials.getUser());
-        config.setPassword(credentials.getPassword());
+        configuration.setDriverClassName("com.mysql.jdbc.Driver");
+        configuration.setJdbcUrl(fullHost);
+        configuration.setUsername(credentials.getUser());
+        configuration.setPassword(credentials.getPassword());
 
-        config.setMinimumIdle(maxConnections / 2);
-        config.setMaximumPoolSize(maxConnections);
+        configuration.setMinimumIdle(maxConnections / 2);
+        configuration.setMaximumPoolSize(maxConnections);
 
-        config.setAutoCommit(true);
-        config.addDataSourceProperty("characterEncoding", "utf8");
-        config.addDataSourceProperty("autoReconnect", true);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("useServerPrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.addDataSourceProperty("rewriteBatchedStatements", "true");
+        configuration.setAutoCommit(true);
+        configuration.addDataSourceProperty("characterEncoding", "utf8");
+        configuration.addDataSourceProperty("autoReconnect", true);
+        configuration.addDataSourceProperty("cachePrepStmts", "true");
+        configuration.addDataSourceProperty("useServerPrepStmts", "true");
+        configuration.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        configuration.addDataSourceProperty("rewriteBatchedStatements", "true");
 
-        final HikariDataSource dataSource = new HikariDataSource(config);
+        final HikariDataSource dataSource = new HikariDataSource(configuration);
         dataSource.setLoginTimeout(3);
 
         return dataSource;
