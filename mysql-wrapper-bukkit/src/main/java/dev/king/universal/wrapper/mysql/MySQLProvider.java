@@ -13,7 +13,7 @@ import dev.king.universal.shared.functional.SafetyBiConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import dev.king.universal.shared.implementation.batch.UnitComputedBatchQuery;
 import dev.king.universal.wrapper.mysql.credential.MysqlCredential;
-import dev.king.universal.wrapper.mysql.implementation.connection.PoolableConnection;
+import dev.king.universal.wrapper.mysql.implementation.connection.DefaultPoolableConnection;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
@@ -26,24 +26,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class MySQLProvider extends PoolableConnection implements DefaultSQLSupport {
+public final class MySQLProvider extends DefaultSQLSupport {
 
     private final UniversalCredential credential;
     private final int maxConnections;
+    private final DefaultPoolableConnection defaultPoolableConnection;
     private final HikariDataSource source;
 
     @SneakyThrows
     public MySQLProvider(@NonNull UniversalCredential credential, int maxConnections) {
+        this.defaultPoolableConnection = new DefaultPoolableConnection();
         this.credential = credential;
         this.maxConnections = maxConnections;
-        this.source = obtainDataSource(credential, maxConnections);
+        this.source = defaultPoolableConnection.obtainDataSource(credential, maxConnections);
     }
 
     /**
@@ -93,15 +92,13 @@ public final class MySQLProvider extends PoolableConnection implements DefaultSQ
      * @return instance of mysql provider
      */
     public static DefaultSQLSupport from(@NonNull String hostname, @NonNull String database, @NonNull String user, @NonNull String password, int maxConnections) {
-        return from(
-          MysqlCredential.builder()
+        return from(MysqlCredential.builder()
             .hostname(hostname)
             .database(database)
             .user(user)
             .password(password)
             .build(),
-          maxConnections
-        );
+          maxConnections);
     }
 
     /**
@@ -158,8 +155,7 @@ public final class MySQLProvider extends PoolableConnection implements DefaultSQ
                 SQLUtil.syncObjects(statement, objects);
 
                 try (ResultSet set = statement.executeQuery()) {
-                    List<K> paramList = new ArrayList<>();
-
+                    List<K> paramList = new LinkedList<>();
                     while (set.next()) paramList.add(function.apply(set));
                     return paramList;
                 }
