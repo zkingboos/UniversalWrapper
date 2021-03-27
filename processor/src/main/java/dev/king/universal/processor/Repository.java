@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 public interface Repository {
 
-    default void unique(@NonNull Object... objects){
+    default void unique(@NonNull Object... objects) {
 
     }
 }

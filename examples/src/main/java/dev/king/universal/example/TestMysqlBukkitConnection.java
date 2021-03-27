@@ -2,7 +2,7 @@
  * Copyright (c) 2020 yking-projects
  */
 
-package dev.king.universal.example.bukkit;
+package dev.king.universal.example;
 
 import dev.king.universal.example.DispatchMethod;
 import dev.king.universal.shared.DefaultSQLSupport;
