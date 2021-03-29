@@ -24,34 +24,38 @@ public class DefaultPoolableConnection implements PoolableProvider {
      * @param credentials    instance of {@link dev.king.universal.shared.credential.UniversalCredential} to login into mysql
      * @param maxConnections passed in MysqlProvider constructor
      * @return data source
-     * @throws SQLException if driver class doesn't exists
      */
-    public HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections) throws SQLException {
-        final HikariConfig configuration = new HikariConfig();
-        final String fullHost = String.format(MYSQL_AUTH_URL,
-          credentials.getHostname(),
-          credentials.getDatabase()
-        );
+    public HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections) {
+        try {
+            final HikariConfig configuration = new HikariConfig();
+            final String fullHost = String.format(MYSQL_AUTH_URL,
+              credentials.getHostname(),
+              credentials.getDatabase()
+            );
 
-        configuration.setDriverClassName("com.mysql.jdbc.Driver");
-        configuration.setJdbcUrl(fullHost);
-        configuration.setUsername(credentials.getUser());
-        configuration.setPassword(credentials.getPassword());
+            configuration.setDriverClassName("com.mysql.jdbc.Driver");
+            configuration.setJdbcUrl(fullHost);
+            configuration.setUsername(credentials.getUser());
+            configuration.setPassword(credentials.getPassword());
 
-        configuration.setMinimumIdle(maxConnections / 2);
-        configuration.setMaximumPoolSize(maxConnections);
+            configuration.setMinimumIdle(maxConnections / 2);
+            configuration.setMaximumPoolSize(maxConnections);
 
-        configuration.setAutoCommit(true);
-        configuration.addDataSourceProperty("characterEncoding", "utf8");
-        configuration.addDataSourceProperty("autoReconnect", true);
-        configuration.addDataSourceProperty("cachePrepStmts", "true");
-        configuration.addDataSourceProperty("useServerPrepStmts", "true");
-        configuration.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        configuration.addDataSourceProperty("rewriteBatchedStatements", "true");
+            configuration.setAutoCommit(true);
+            configuration.addDataSourceProperty("characterEncoding", "utf8");
+            configuration.addDataSourceProperty("autoReconnect", "true");
+            configuration.addDataSourceProperty("cachePrepStmts", "true");
+            configuration.addDataSourceProperty("useServerPrepStmts", "true");
+            configuration.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+            configuration.addDataSourceProperty("rewriteBatchedStatements", "true");
 
-        final HikariDataSource dataSource = new HikariDataSource(configuration);
-        dataSource.setLoginTimeout(3);
+            final HikariDataSource dataSource = new HikariDataSource(configuration);
+            dataSource.setLoginTimeout(3);
 
-        return dataSource;
+            return dataSource;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return null;
+        }
     }
 }

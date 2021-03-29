@@ -5,7 +5,6 @@ import dev.king.universal.shared.properties.PropertiesSupport;
 import dev.king.universal.shared.properties.SegmentSupport;
 import lombok.NonNull;
 import lombok.extern.java.Log;
-import org.jetbrains.annotations.NotNull;
 
 @Log(topic = "ExtensionSupport")
 public final class ExtensionSupport extends SegmentSupport<BaseExtension> {
@@ -15,7 +14,7 @@ public final class ExtensionSupport extends SegmentSupport<BaseExtension> {
     }
 
     @Override
-    public PropertiesSupport install(@NotNull BaseExtension baseExtension) {
+    public PropertiesSupport install(@NonNull BaseExtension baseExtension) {
         log.info(String.format("Attempting to install '%s' delegate extension.%n", baseExtension.getName()));
         setDefaultSQLSupport(baseExtension.setDefaultSQLSupport(getDefaultSQLSupport()));
         return getPropertiesSupport();
