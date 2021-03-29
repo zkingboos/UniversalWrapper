@@ -21,7 +21,6 @@ public interface PoolableProvider {
      * @param credentials    instance of {@link dev.king.universal.shared.credential.UniversalCredential} to login or connect into mysql
      * @param maxConnections passed in MysqlProvider constructor
      * @return returns an {@link com.zaxxer.hikari.HikariDataSource} object, that you can manage it
-     * @throws SQLException anything can break here, don't worry.
      */
-    HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections) throws SQLException;
+    HikariDataSource obtainDataSource(@NonNull UniversalCredential credentials, int maxConnections);
 }

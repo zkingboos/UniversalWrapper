@@ -17,7 +17,6 @@ import dev.king.universal.wrapper.mysql.implementation.connection.DefaultPoolabl
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +25,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -34,15 +36,18 @@ public final class MySQLProvider extends DefaultSQLSupport {
 
     private final UniversalCredential credential;
     private final int maxConnections;
-    private final DefaultPoolableConnection defaultPoolableConnection;
+    private final PoolableProvider poolableProvider;
     private final HikariDataSource source;
 
-    @SneakyThrows
-    public MySQLProvider(@NonNull UniversalCredential credential, int maxConnections) {
-        this.defaultPoolableConnection = new DefaultPoolableConnection();
+    public MySQLProvider(@NonNull UniversalCredential credential, @NonNull PoolableProvider defaultPoolableConnection, int maxConnections) {
+        this.poolableProvider = defaultPoolableConnection;
         this.credential = credential;
         this.maxConnections = maxConnections;
-        this.source = defaultPoolableConnection.obtainDataSource(credential, maxConnections);
+        this.source = poolableProvider.obtainDataSource(credential, maxConnections);
+    }
+
+    public MySQLProvider(@NonNull UniversalCredential credential, int maxConnections) {
+        this(credential, new DefaultPoolableConnection(), maxConnections);
     }
 
     /**

@@ -18,4 +18,3 @@ dependencies {
     implementation project(":shared")
     api project(":shared")
 }
-
