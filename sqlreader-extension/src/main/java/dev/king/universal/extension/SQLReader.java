@@ -3,7 +3,6 @@ package dev.king.universal.extension;
 import dev.king.universal.shared.SQLUtil;
 import lombok.Data;
 import lombok.NonNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,11 +38,13 @@ public class SQLReader {
         this(root, DEFAULT_EXTENSION);
     }
 
-    @Nullable
     private Map<String, String> getRecursively(String path) {
+        final File resource = SQLUtil.getResource(path);
+        assert resource != null;
+
         try {
             final Map<String, String> sqlMap = new LinkedHashMap<>();
-            for (File file : Objects.requireNonNull(SQLUtil.getResource(path)).listFiles()) {
+            for (File file : Objects.requireNonNull(resource.listFiles())) {
                 final String name = String.format("%s/%s", path, file.getName());
                 if (file.isDirectory()) {
                     sqlMap.putAll(Objects.requireNonNull(getRecursively(name)));
