@@ -19,6 +19,7 @@ public class SQLReaderExtension extends BaseExtension {
 
     private final SQLReader sqlReader;
     private DefaultSQLSupport defaultSQLSupport;
+
     public SQLReaderExtension(@NonNull String root, @NonNull String extension) {
         super("SQLReader");
         this.sqlReader = new SQLReader(root, extension);

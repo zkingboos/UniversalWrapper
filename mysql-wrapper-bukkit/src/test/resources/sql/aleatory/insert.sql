@@ -1,1 +1,2 @@
-insert into parasite(crowd) values (?)
+insert into parasite(crowd)
+values (?)

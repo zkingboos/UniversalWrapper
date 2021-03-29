@@ -23,7 +23,7 @@ public class MariaDBProvider extends MySQLProvider {
      *
      * @param universalCredential login credentials from {@link dev.king.universal.shared.credential.UniversalCredential}
      * @param maxConnections      number of max connections (idle connections are divided by 2)
-     * @return instance of mysql provider
+     * @return instance from desired support provider
      */
     public static DefaultSQLSupport from(@NonNull UniversalCredential universalCredential, int maxConnections) {
         return new MariaDBProvider(
@@ -36,7 +36,7 @@ public class MariaDBProvider extends MySQLProvider {
      *
      * @param section        {@link JavaPlugin#getConfig()} method
      * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance of mysql provider
+     * @return instance from desired support provider
      */
     public static DefaultSQLSupport fromConfiguration(@NonNull ConfigurationSection section, int maxConnections) {
         return from(MysqlCredential.fromConfiguration(section), maxConnections);
@@ -48,7 +48,7 @@ public class MariaDBProvider extends MySQLProvider {
      * @param plugin         {@link JavaPlugin} instance
      * @param path           configuration section path
      * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance of mysql provider
+     * @return instance from desired support provider
      */
     public static DefaultSQLSupport fromPlugin(@NonNull Plugin plugin, @NonNull String path, int maxConnections) {
         return fromConfiguration(Objects.requireNonNull(plugin.getConfig().getConfigurationSection(path)), maxConnections);
@@ -62,7 +62,7 @@ public class MariaDBProvider extends MySQLProvider {
      * @param user           target
      * @param password       target
      * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance of mysql provider
+     * @return instance from desired support provider
      */
     public static DefaultSQLSupport from(@NonNull String hostname, @NonNull String database, @NonNull String user, @NonNull String password, int maxConnections) {
         return from(MysqlCredential.builder()
@@ -78,7 +78,7 @@ public class MariaDBProvider extends MySQLProvider {
      * Creates provider to mysql
      *
      * @param universalCredential login credentials from {@link dev.king.universal.shared.credential.UniversalCredential}
-     * @return instance of mysql provider
+     * @return instance from desired support provider
      */
     public static DefaultSQLSupport from(@NonNull UniversalCredential universalCredential) {
         return from(universalCredential, 4);
