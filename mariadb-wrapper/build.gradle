@@ -6,21 +6,21 @@ plugins {
 }
 
 //group 'dev.king.universal'
-//version '4.0.3-SNAPSHOT'
+//version '4.0.5.1-SNAPSHOT'
 
 repositories {
+    mavenCentral()
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT'
-    implementation 'com.zaxxer:HikariCP:3.4.5'
-    api 'com.zaxxer:HikariCP:3.4.5'
-    implementation project(":shared")
-    api project(":shared")
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
+    implementation project(":mysql-wrapper-bukkit")
+    api project(":mysql-wrapper-bukkit")
 
-    testImplementation project(":sqlreader-extension")
+    testImplementation project(":mysql-wrapper-bukkit")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testCompileOnly 'junit:junit:4.13'
