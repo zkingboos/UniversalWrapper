@@ -20,6 +20,12 @@ public class TestMariaDBSupport {
     }
 
     @Test
+    @AfterAll
+    static void dropTable() {
+        assertEquals(0, defaultSQLSupport.update("drop table if exists test"));
+    }
+
+    @Test
     @BeforeEach
     public void testIfHasConnectionAndCreateTable() {
         assertTrue(defaultSQLSupport.hasConnection());
@@ -34,11 +40,5 @@ public class TestMariaDBSupport {
     @Test
     void testIfSelectionsWorksCorrectly() {
         assertNotNull(defaultSQLSupport.query("select name from test", resultSet -> resultSet.getString("name")));
-    }
-
-    @Test
-    @AfterAll
-    static void dropTable() {
-        assertEquals(0, defaultSQLSupport.update("drop table if exists test"));
     }
 }

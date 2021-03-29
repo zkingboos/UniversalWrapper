@@ -4,7 +4,6 @@
 
 package dev.king.universal.example;
 
-import dev.king.universal.example.DispatchMethod;
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.wrapper.mysql.MySQLProvider;
@@ -18,7 +17,7 @@ public final class TestMysqlBukkitConnection extends JavaPlugin {
 
     /**
      * Initialize mysql connection, using UniversalWrapper project on bukkit environment
-     *
+     * <p>
      * Create {@link UniversalCredential} from {@link ConfigurationSection}, using {@link MysqlCredential#fromConfiguration(ConfigurationSection)}
      * you can also use {@link MySQLProvider#fromPlugin(Plugin, String, int)} to compact inline-method.
      */
