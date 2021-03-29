@@ -32,7 +32,7 @@ import java.util.Objects;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class MySQLProvider extends DefaultSQLSupport {
+public class MySQLProvider extends DefaultSQLSupport {
 
     private final UniversalCredential credential;
     private final int maxConnections;
