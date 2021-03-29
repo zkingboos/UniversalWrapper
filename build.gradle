@@ -1,10 +1,9 @@
 plugins {
     id 'java'
-    id 'maven'
 }
 
 def groupProject = 'dev.king.universal'
-def versionProject = '4.0.5.2-SNAPSHOT'
+def versionProject = '4.0.5.2.1-SNAPSHOT'
 
 group = groupProject
 version = versionProject
