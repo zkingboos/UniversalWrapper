@@ -8,4 +8,3 @@ include 'examples'
 include 'processor'
 include 'sqlreader-extension'
 include 'mariadb-wrapper'
-
