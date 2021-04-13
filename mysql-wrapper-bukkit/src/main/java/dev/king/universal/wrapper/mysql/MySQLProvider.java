@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 public class MySQLProvider extends DefaultSQLSupport {
 
     private final UniversalCredential credential;
