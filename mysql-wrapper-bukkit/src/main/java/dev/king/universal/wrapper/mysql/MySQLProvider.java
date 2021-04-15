@@ -84,7 +84,6 @@ public class MySQLProvider extends DefaultSQLSupport {
         return from(MysqlCredential.fromConfiguration(configuration), maxConnections);
     }
 
-
     /**
      * Create provider to mysql from bungee configuration from section
      *
