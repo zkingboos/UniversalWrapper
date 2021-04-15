@@ -1,7 +1,7 @@
 import dev.king.universal.extension.SQLReaderExtension;
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.wrapper.mysql.MySQLProvider;
-import dev.king.universal.wrapper.mysql.credential.MysqlCredential;
+import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import lombok.extern.java.Log;
 import org.junit.After;
 import org.junit.jupiter.api.Assertions;
