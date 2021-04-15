@@ -13,7 +13,6 @@ import dev.king.universal.shared.implementation.batch.UnitComputedBatchQuery;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 
 import java.io.File;
 import java.sql.*;
@@ -35,15 +34,12 @@ public final class SQLProvider extends DefaultSQLSupport {
      * @return instance of sql provider
      */
     public static DefaultSQLSupport from(@NonNull File file) {
-        return new SQLProvider(
-          file
-        );
+        return new SQLProvider(file);
     }
 
     @Override
     public void closeConnection() {
         if (!hasConnection()) return;
-
         try {
             connection.close();
         } catch (SQLException exception) {
@@ -51,9 +47,14 @@ public final class SQLProvider extends DefaultSQLSupport {
         }
     }
 
-    @SneakyThrows
+    @Override
     public boolean hasConnection() {
-        return connection != null && !connection.isClosed();
+        try {
+            return connection != null && !connection.isClosed();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -64,10 +65,7 @@ public final class SQLProvider extends DefaultSQLSupport {
 
             Class.forName("org.sqlite.JDBC");
             //DriverManager.registerDriver(new JDBC()); //removed for logistic heavy package
-            connection = DriverManager.getConnection(
-              "jdbc:sqlite:" + output
-            );
-
+            connection = DriverManager.getConnection("jdbc:sqlite:" + output);
             return !connection.isClosed();
         } catch (SQLException | ClassNotFoundException exception) {
             exception.printStackTrace();
@@ -121,19 +119,20 @@ public final class SQLProvider extends DefaultSQLSupport {
     }
 
     @Override
-    @SneakyThrows
     public <T> int[] batch(@NonNull String query, SafetyBiConsumer<T, ComputedBatchQuery> batchFunction, Collection<T> collection) {
-        final boolean autoCommit = connection.getAutoCommit();
-        connection.setAutoCommit(false);
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            final ComputedBatchQuery batchQuery = new UnitComputedBatchQuery(statement);
-            for (T object : collection) {
-                batchFunction.accept(object, batchQuery);
+        try {
+            final boolean autoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                final ComputedBatchQuery batchQuery = new UnitComputedBatchQuery(statement);
+                for (T object : collection) {
+                    batchFunction.accept(object, batchQuery);
+                }
+                final int[] results = statement.executeBatch();
+                connection.commit();
+                connection.setAutoCommit(autoCommit);
+                return results;
             }
-            final int[] results = statement.executeBatch();
-            connection.commit();
-            connection.setAutoCommit(autoCommit);
-            return results;
         } catch (SQLException exception) {
             exception.printStackTrace();
             return new int[0];
