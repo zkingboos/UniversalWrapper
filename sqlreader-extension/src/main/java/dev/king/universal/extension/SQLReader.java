@@ -6,12 +6,12 @@ import lombok.NonNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 @Data
 public class SQLReader {
@@ -31,26 +31,30 @@ public class SQLReader {
     public SQLReader(@NonNull String root, @NonNull String extension) {
         this.root = root;
         this.extension = extension;
-        this.registry = new LinkedHashMap<>(getRecursively(root));
+        this.registry = new LinkedHashMap<>(getRecursively());
     }
 
     public SQLReader(@NonNull String root) {
         this(root, DEFAULT_EXTENSION);
     }
 
-    private Map<String, String> getRecursively(String path) {
-        final File resource = SQLUtil.getResource(path);
-        assert resource != null;
-
+    private Map<String, String> getRecursively() {
         try {
+            final File resource = SQLUtil.getAbsoluteFile();
             final Map<String, String> sqlMap = new LinkedHashMap<>();
-            for (File file : Objects.requireNonNull(resource.listFiles())) {
-                final String name = String.format("%s/%s", path, file.getName());
-                if (file.isDirectory()) {
-                    sqlMap.putAll(Objects.requireNonNull(getRecursively(name)));
-                    continue;
+
+            final JarFile jarFile = new JarFile(resource);
+            final Enumeration<JarEntry> entries = jarFile.entries();
+
+            while (entries.hasMoreElements()) {
+                final JarEntry jarEntry = entries.nextElement();
+                final String name = jarEntry.getName();
+
+                if (!name.startsWith(root) || !name.endsWith(extension)) continue;
+                try (InputStream inputStream = jarFile.getInputStream(jarEntry)) {
+                    final String readAllContent = SQLUtil.readAllContent(inputStream);
+                    sqlMap.put(name, readAllContent);
                 }
-                sqlMap.put(name, Files.lines(file.toPath(), StandardCharsets.UTF_8).collect(Collectors.joining()));
             }
             return sqlMap;
         } catch (IOException exception) {
@@ -60,7 +64,7 @@ public class SQLReader {
     }
 
     public String getSQL(@NonNull String path) throws SQLReaderNotFoundException {
-        path = String.format("%s/%s", root, path.trim().replace(".", "/").concat(extension));
+        path = String.format("%s/%s%s", root, path.trim().replace(".", "/"), extension);
         final String content = registry.get(path);
         if (content == null) {
             throw new SQLReaderNotFoundException("SQLReader couldn't read content sql from '%s'.", path);

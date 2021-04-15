@@ -7,9 +7,10 @@ package dev.king.universal.shared;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -20,12 +21,6 @@ import java.util.Iterator;
  */
 @UtilityClass
 public final class SQLUtil {
-
-    private final static ClassLoader CLASS_LOADER;
-
-    static {
-        CLASS_LOADER = SQLUtil.class.getClassLoader();
-    }
 
     /**
      * Synchronize the objects param in the prepared statement
@@ -41,12 +36,23 @@ public final class SQLUtil {
         }
     }
 
-    public File getResource(@NonNull String filename) {
-        try {
-            final URL url = CLASS_LOADER.getResource(filename);
-            if (url == null) return null;
-            return new File(url.toURI());
-        } catch (URISyntaxException ignored) {
+    public String getAbsolutePath() {
+        return SQLUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    }
+
+    public File getAbsoluteFile() {
+        return new File(getAbsolutePath());
+    }
+
+    public String readAllContent(@NonNull InputStream inputStream) {
+        try (ByteArrayOutputStream result = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            for (int length; (length = inputStream.read(buffer)) != -1; ) {
+                result.write(buffer, 0, length);
+            }
+            return result.toString("UTF-8");
+        } catch (IOException exception) {
+            exception.printStackTrace();
             return null;
         }
     }
