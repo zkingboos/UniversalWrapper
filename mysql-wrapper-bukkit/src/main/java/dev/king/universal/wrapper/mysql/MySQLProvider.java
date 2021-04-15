@@ -12,11 +12,12 @@ import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.shared.functional.SafetyBiConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import dev.king.universal.shared.implementation.batch.UnitComputedBatchQuery;
-import dev.king.universal.wrapper.mysql.credential.MysqlCredential;
 import dev.king.universal.wrapper.mysql.implementation.connection.DefaultPoolableConnection;
+import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import net.md_5.bungee.config.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -58,9 +59,7 @@ public class MySQLProvider extends DefaultSQLSupport {
      * @return instance from desired support provider
      */
     public static DefaultSQLSupport from(@NonNull UniversalCredential universalCredential, int maxConnections) {
-        return new MySQLProvider(
-          universalCredential, maxConnections
-        );
+        return new MySQLProvider(universalCredential, maxConnections);
     }
 
     /**
@@ -72,6 +71,29 @@ public class MySQLProvider extends DefaultSQLSupport {
      */
     public static DefaultSQLSupport fromConfiguration(@NonNull ConfigurationSection section, int maxConnections) {
         return from(MysqlCredential.fromConfiguration(section), maxConnections);
+    }
+
+    /**
+     * Create provider to mysql
+     *
+     * @param configuration  {@link Configuration} instance
+     * @param maxConnections number of max connections (idle connections are divided by 2)
+     * @return instance from desired support provider
+     */
+    public static DefaultSQLSupport fromConfiguration(@NonNull Configuration configuration, int maxConnections) {
+        return from(MysqlCredential.fromConfiguration(configuration), maxConnections);
+    }
+
+
+    /**
+     * Create provider to mysql from bungee configuration from section
+     *
+     * @param configuration  {@link Configuration} instance
+     * @param maxConnections number of max connections (idle connections are divided by 2)
+     * @return instance from desired support provider
+     */
+    public static DefaultSQLSupport fromConfiguration(@NonNull Configuration configuration, @NonNull String path, int maxConnections) {
+        return from(MysqlCredential.fromConfiguration(configuration.getSection(path)), maxConnections);
     }
 
     /**
@@ -97,13 +119,15 @@ public class MySQLProvider extends DefaultSQLSupport {
      * @return instance from desired support provider
      */
     public static DefaultSQLSupport from(@NonNull String hostname, @NonNull String database, @NonNull String user, @NonNull String password, int maxConnections) {
-        return from(MysqlCredential.builder()
+        return from(
+          MysqlCredential.builder()
             .hostname(hostname)
             .database(database)
             .user(user)
             .password(password)
             .build(),
-          maxConnections);
+          maxConnections
+        );
     }
 
     /**
@@ -154,6 +178,7 @@ public class MySQLProvider extends DefaultSQLSupport {
         }
     }
 
+    @Override
     public <K> List<K> map(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> function, Object... objects) {
         try (Connection connection = source.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(query)) {

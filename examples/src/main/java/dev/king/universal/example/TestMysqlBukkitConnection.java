@@ -7,7 +7,7 @@ package dev.king.universal.example;
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.wrapper.mysql.MySQLProvider;
-import dev.king.universal.wrapper.mysql.credential.MysqlCredential;
+import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;

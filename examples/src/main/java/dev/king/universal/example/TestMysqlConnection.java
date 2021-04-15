@@ -7,7 +7,7 @@ package dev.king.universal.example;
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.wrapper.mysql.MySQLProvider;
-import dev.king.universal.wrapper.mysql.credential.MysqlCredential;
+import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 
 public final class TestMysqlConnection {
 

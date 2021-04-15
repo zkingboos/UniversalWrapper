@@ -1,6 +1,6 @@
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.wrapper.mariadb.MariaDBProvider;
-import dev.king.universal.wrapper.mysql.credential.MysqlCredential;
+import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

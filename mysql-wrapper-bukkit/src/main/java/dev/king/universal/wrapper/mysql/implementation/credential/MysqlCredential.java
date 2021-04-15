@@ -2,13 +2,14 @@
  * Copyright (c) 2020 yking-projects
  */
 
-package dev.king.universal.wrapper.mysql.credential;
+package dev.king.universal.wrapper.mysql.implementation.credential;
 
 import dev.king.universal.shared.credential.UniversalCredential;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import net.md_5.bungee.config.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Objects;
@@ -39,6 +40,21 @@ public final class MysqlCredential implements UniversalCredential {
           .database(Objects.requireNonNull(section.getString("database")))
           .user(Objects.requireNonNull(section.getString("user")))
           .password(Objects.requireNonNull(section.getString("password")))
+          .build();
+    }
+
+    /**
+     * Create {@link MysqlCredential} from a {@link Configuration}
+     *
+     * @param configuration instance of bungee configuration
+     * @return credential security
+     */
+    public static MysqlCredential fromConfiguration(@NonNull Configuration configuration) {
+        return builder()
+          .hostname(configuration.getString("hostname"))
+          .database(configuration.getString("database"))
+          .user(configuration.getString("user"))
+          .password(configuration.getString("password"))
           .build();
     }
 }
