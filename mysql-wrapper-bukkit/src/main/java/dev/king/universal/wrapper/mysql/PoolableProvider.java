@@ -29,7 +29,7 @@ public interface PoolableProvider {
      *
      * @param credential     instance of {@link dev.king.universal.shared.credential.UniversalCredential} to login or connect into mysql
      * @param maxConnections passed in MysqlProvider constructor
-     * @return
+     * @return hikari object configuration pool
      */
     HikariConfig getHikariConfiguration(@NonNull UniversalCredential credential, int maxConnections);
 }

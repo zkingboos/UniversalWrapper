@@ -4,8 +4,9 @@ import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.wrapper.mariadb.implementation.connection.MariaDBPoolableConnection;
 import dev.king.universal.wrapper.mysql.MySQLProvider;
-import dev.king.universal.wrapper.mysql.credential.MysqlCredential;
+import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import lombok.NonNull;
+import net.md_5.bungee.config.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,9 +27,7 @@ public class MariaDBProvider extends MySQLProvider {
      * @return instance from desired support provider
      */
     public static DefaultSQLSupport from(@NonNull UniversalCredential universalCredential, int maxConnections) {
-        return new MariaDBProvider(
-          universalCredential, maxConnections
-        );
+        return new MariaDBProvider(universalCredential, maxConnections);
     }
 
     /**
@@ -65,13 +64,15 @@ public class MariaDBProvider extends MySQLProvider {
      * @return instance from desired support provider
      */
     public static DefaultSQLSupport from(@NonNull String hostname, @NonNull String database, @NonNull String user, @NonNull String password, int maxConnections) {
-        return from(MysqlCredential.builder()
+        return from(
+          MysqlCredential.builder()
             .hostname(hostname)
             .database(database)
             .user(user)
             .password(password)
             .build(),
-          maxConnections);
+          maxConnections
+        );
     }
 
     /**
@@ -82,5 +83,27 @@ public class MariaDBProvider extends MySQLProvider {
      */
     public static DefaultSQLSupport from(@NonNull UniversalCredential universalCredential) {
         return from(universalCredential, 4);
+    }
+
+    /**
+     * Create provider to mysql
+     *
+     * @param configuration  {@link Configuration} instance
+     * @param maxConnections number of max connections (idle connections are divided by 2)
+     * @return instance from desired support provider
+     */
+    public static DefaultSQLSupport fromConfiguration(@NonNull Configuration configuration, int maxConnections) {
+        return from(MysqlCredential.fromConfiguration(configuration), maxConnections);
+    }
+
+    /**
+     * Create provider to mysql from bungee configuration from section
+     *
+     * @param configuration  {@link Configuration} instance
+     * @param maxConnections number of max connections (idle connections are divided by 2)
+     * @return instance from desired support provider
+     */
+    public static DefaultSQLSupport fromConfiguration(@NonNull Configuration configuration, @NonNull String path, int maxConnections) {
+        return from(MysqlCredential.fromConfiguration(configuration.getSection(path)), maxConnections);
     }
 }
