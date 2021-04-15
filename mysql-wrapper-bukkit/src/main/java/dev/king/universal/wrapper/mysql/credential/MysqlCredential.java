@@ -11,6 +11,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Objects;
+
 /**
  * The credential security login to authenticate with mysql
  * Is used to grants secure system.
@@ -33,10 +35,10 @@ public final class MysqlCredential implements UniversalCredential {
      */
     public static MysqlCredential fromConfiguration(@NonNull ConfigurationSection section) {
         return builder()
-          .hostname(section.getString("hostname"))
-          .database(section.getString("database"))
-          .user(section.getString("user"))
-          .password(section.getString("password"))
+          .hostname(Objects.requireNonNull(section.getString("hostname")))
+          .database(Objects.requireNonNull(section.getString("database")))
+          .user(Objects.requireNonNull(section.getString("user")))
+          .password(Objects.requireNonNull(section.getString("password")))
           .build();
     }
 }
