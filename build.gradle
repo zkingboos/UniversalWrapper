@@ -3,7 +3,7 @@ plugins {
 }
 
 def groupProject = 'dev.king.universal'
-def versionProject = '4.0.5.4-SNAPSHOT'
+def versionProject = '4.0.6-SNAPSHOT'
 
 group = groupProject
 version = versionProject
