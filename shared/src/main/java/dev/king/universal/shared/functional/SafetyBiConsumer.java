@@ -6,16 +6,16 @@ package dev.king.universal.shared.functional;
 
 import java.util.function.BiConsumer;
 
-public interface SafetyBiConsumer<T, R> extends BiConsumer<T, R> {
+public interface SafetyBiConsumer<Type, Result> extends BiConsumer<Type, Result> {
 
     @Override
-    default void accept(T t, R r) {
+    default void accept(Type type, Result result) {
         try {
-            acceptThrowing(t, r);
+            acceptThrowing(type, result);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
 
-    void acceptThrowing(T t, R r) throws Exception;
+    void acceptThrowing(Type type, Result result) throws Exception;
 }

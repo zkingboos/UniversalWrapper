@@ -3,18 +3,14 @@ plugins {
 }
 
 def groupProject = 'dev.king.universal'
-def versionProject = '4.0.6-SNAPSHOT'
-
-group = groupProject
-version = versionProject
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+def versionProject = '4.0.6-dev.1'
 
 allprojects {
     group = groupProject
     version = versionProject
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    compileJava.options.encoding = 'UTF-8'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 
     afterEvaluate {
         repositories {
@@ -31,11 +27,8 @@ allprojects {
         }
     }
 
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
-
     tasks.withType(Jar) {
         destinationDirectory.set(file("$rootDir/build/"))
     }
 }
+

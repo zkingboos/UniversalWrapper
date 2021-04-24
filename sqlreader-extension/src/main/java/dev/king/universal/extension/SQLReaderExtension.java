@@ -4,6 +4,7 @@ import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.shared.batch.ComputedBatchQuery;
 import dev.king.universal.shared.extension.BaseExtension;
 import dev.king.universal.shared.functional.SafetyBiConsumer;
+import dev.king.universal.shared.functional.SafetyConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import lombok.Getter;
 import lombok.NonNull;
@@ -47,6 +48,11 @@ public class SQLReaderExtension extends BaseExtension {
     @Override
     public int update(@NonNull String path, Object... objects) {
         return defaultSQLSupport.update(sqlReader.getSQL(path), objects);
+    }
+
+    @Override
+    public int update(@NonNull String path, @NonNull SafetyConsumer<ResultSet> safetyConsumer, Object... objects) {
+        return defaultSQLSupport.update(sqlReader.getSQL(path), safetyConsumer, objects);
     }
 
     @Override

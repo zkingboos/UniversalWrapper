@@ -9,20 +9,20 @@ import java.util.function.Function;
 /**
  * Is trying block functional interface
  *
- * @param <T> input generic param, has used to ResultSet
- * @param <R> out generic param, has used to returns an object type
+ * @param <Type>   input generic param, has used to ResultSet
+ * @param <Result> out generic param, has used to returns an object type
  */
-public interface SafetyFunction<T, R> extends Function<T, R> {
+public interface SafetyFunction<Type, Result> extends Function<Type, Result> {
 
     @Override
-    default R apply(T t) {
+    default Result apply(Type type) {
         try {
-            return applyThrowing(t);
+            return applyThrowing(type);
         } catch (Exception exception) {
             exception.printStackTrace();
             return null;
         }
     }
 
-    R applyThrowing(T t) throws Exception;
+    Result applyThrowing(Type type) throws Exception;
 }

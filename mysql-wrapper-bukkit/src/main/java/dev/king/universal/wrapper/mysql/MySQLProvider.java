@@ -10,6 +10,7 @@ import dev.king.universal.shared.SQLUtil;
 import dev.king.universal.shared.batch.ComputedBatchQuery;
 import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.shared.functional.SafetyBiConsumer;
+import dev.king.universal.shared.functional.SafetyConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import dev.king.universal.shared.implementation.batch.UnitComputedBatchQuery;
 import dev.king.universal.wrapper.mysql.implementation.connection.DefaultPoolableConnection;
@@ -22,10 +23,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +32,8 @@ import java.util.Objects;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class MySQLProvider extends DefaultSQLSupport {
+
+    private final static int RETURN_GENERATED_KEYS = Statement.RETURN_GENERATED_KEYS;
 
     private final UniversalCredential credential;
     private final int maxConnections;
@@ -209,14 +209,36 @@ public class MySQLProvider extends DefaultSQLSupport {
     }
 
     @Override
+    public int update(@NonNull String query, @NonNull SafetyConsumer<ResultSet> safetyConsumer, Object... objects) {
+        try (Connection connection = source.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(query, RETURN_GENERATED_KEYS)) {
+                SQLUtil.syncObjects(statement, objects);
+                int result = statement.executeUpdate();
+                try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                    safetyConsumer.accept(resultSet);
+                }
+                return result;
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
     public <T> int[] batch(@NonNull String query, SafetyBiConsumer<T, ComputedBatchQuery> batchFunction, Collection<T> collection) {
         try (Connection connection = source.getConnection()) {
+            final boolean autoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 final ComputedBatchQuery batchQuery = new UnitComputedBatchQuery(statement);
                 for (T object : collection) {
                     batchFunction.accept(object, batchQuery);
                 }
-                return statement.executeBatch();
+                final int[] results = statement.executeBatch();
+                connection.commit();
+                connection.setAutoCommit(autoCommit);
+                return results;
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
