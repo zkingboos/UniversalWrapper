@@ -6,6 +6,7 @@ package dev.king.universal.shared;
 
 import dev.king.universal.shared.batch.ComputedBatchQuery;
 import dev.king.universal.shared.functional.SafetyBiConsumer;
+import dev.king.universal.shared.functional.SafetyConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import dev.king.universal.shared.properties.PropertiesSupport;
 import lombok.Data;
@@ -58,6 +59,16 @@ public abstract class DefaultSQLSupport implements AutoCloseable {
     public abstract int update(@NonNull String query, Object... objects);
 
     /**
+     * Uses just in create, delete, insert and update queries
+     *
+     * @param query          the query of mysql
+     * @param safetyConsumer generated key from result set
+     * @param objects        the objects that will be put in the prepared statement
+     * @return query response
+     */
+    public abstract int update(@NonNull String query, @NonNull SafetyConsumer<ResultSet> safetyConsumer, Object... objects);
+
+    /**
      * Uses just in select query
      *
      * @param query    the query of mysql
@@ -88,7 +99,7 @@ public abstract class DefaultSQLSupport implements AutoCloseable {
      * @param <K>           type of objects
      * @return result of batch
      */
-    public abstract <K> int[] batch(@NonNull String query, SafetyBiConsumer<K, ComputedBatchQuery> batchFunction, Collection<K> collection);
+    public abstract <K> int[] batch(@NonNull String query, @NonNull SafetyBiConsumer<K, ComputedBatchQuery> batchFunction, Collection<K> collection);
 
     /**
      * Closes the connection, but automatically

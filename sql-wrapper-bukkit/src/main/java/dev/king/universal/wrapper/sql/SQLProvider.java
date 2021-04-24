@@ -8,6 +8,7 @@ import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.shared.SQLUtil;
 import dev.king.universal.shared.batch.ComputedBatchQuery;
 import dev.king.universal.shared.functional.SafetyBiConsumer;
+import dev.king.universal.shared.functional.SafetyConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import dev.king.universal.shared.implementation.batch.UnitComputedBatchQuery;
 import lombok.Data;
@@ -21,8 +22,10 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
-public final class SQLProvider extends DefaultSQLSupport {
+@EqualsAndHashCode(callSuper = false)
+public class SQLProvider extends DefaultSQLSupport {
+
+    private final static int RETURN_GENERATED_KEYS = Statement.RETURN_GENERATED_KEYS;
 
     private final File output;
     private Connection connection;
@@ -74,13 +77,13 @@ public final class SQLProvider extends DefaultSQLSupport {
     }
 
     @Override
-    public <K> K query(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> consumer, Object... objects) {
+    public <K> K query(@NonNull String query, @NonNull SafetyFunction<ResultSet, K> function, Object... objects) {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             SQLUtil.syncObjects(ps, objects);
 
             try (ResultSet set = ps.executeQuery()) {
                 return set != null && set.next()
-                  ? consumer.apply(set)
+                  ? function.apply(set)
                   : null;
             }
         } catch (SQLException exception) {
@@ -94,6 +97,21 @@ public final class SQLProvider extends DefaultSQLSupport {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             SQLUtil.syncObjects(statement, objects);
             return statement.executeUpdate();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return -1;
+        }
+    }
+
+    @Override
+    public int update(@NonNull String query, @NonNull SafetyConsumer<ResultSet> safetyConsumer, Object... objects) {
+        try (PreparedStatement statement = connection.prepareStatement(query, RETURN_GENERATED_KEYS)) {
+            SQLUtil.syncObjects(statement, objects);
+            int result = statement.executeUpdate();
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                safetyConsumer.accept(resultSet);
+            }
+            return result;
         } catch (SQLException exception) {
             exception.printStackTrace();
             return -1;
