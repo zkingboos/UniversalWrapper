@@ -6,13 +6,11 @@ services:
     container_name: universalwrapper_database
     ports:
       - "3306:3306"
-    expose:
-      - "3306"
     volumes:
       - universalwrapper_volume:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=test
-      - MYSQL_DATABASE=universalwrapper
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: universalwrapper
 
 volumes:
   universalwrapper_volume:
