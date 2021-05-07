@@ -2,12 +2,9 @@ plugins {
     id 'java'
 }
 
-def groupProject = 'dev.king.universal'
-def versionProject = '4.0.6-dev.1'
-
 allprojects {
-    group = groupProject
-    version = versionProject
+    group = 'dev.king.universal'
+    version = '4.0.6-dev.2'
     compileJava.options.encoding = 'UTF-8'
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
