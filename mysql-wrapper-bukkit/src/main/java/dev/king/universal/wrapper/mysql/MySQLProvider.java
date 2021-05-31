@@ -13,21 +13,14 @@ import dev.king.universal.shared.functional.SafetyBiConsumer;
 import dev.king.universal.shared.functional.SafetyConsumer;
 import dev.king.universal.shared.functional.SafetyFunction;
 import dev.king.universal.shared.implementation.batch.UnitComputedBatchQuery;
-import dev.king.universal.wrapper.mysql.implementation.connection.DefaultPoolableConnection;
-import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import net.md_5.bungee.config.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -35,108 +28,20 @@ public class MySQLProvider extends DefaultSQLSupport {
 
     private final static int RETURN_GENERATED_KEYS = Statement.RETURN_GENERATED_KEYS;
 
+    public static MySQLProviderBuilder builder() {
+        return new MySQLProviderBuilder();
+    }
+
     private final UniversalCredential credential;
     private final int maxConnections;
-    private final PoolableProvider poolableProvider;
+    private final HikariPoolableDriver poolableProvider;
     private final HikariDataSource source;
 
-    public MySQLProvider(@NonNull UniversalCredential credential, @NonNull PoolableProvider defaultPoolableConnection, int maxConnections) {
+    public MySQLProvider(@NonNull UniversalCredential credential, @NonNull HikariPoolableDriver defaultPoolableConnection, int maxConnections) {
         this.poolableProvider = defaultPoolableConnection;
         this.credential = credential;
         this.maxConnections = maxConnections;
-        this.source = poolableProvider.obtainDataSource(credential, maxConnections);
-    }
-
-    public MySQLProvider(@NonNull UniversalCredential credential, int maxConnections) {
-        this(credential, new DefaultPoolableConnection(), maxConnections);
-    }
-
-    /**
-     * Creates provider to mysql
-     *
-     * @param universalCredential login credentials from {@link dev.king.universal.shared.credential.UniversalCredential}
-     * @param maxConnections      number of max connections (idle connections are divided by 2)
-     * @return instance from desired support provider
-     */
-    public static DefaultSQLSupport from(@NonNull UniversalCredential universalCredential, int maxConnections) {
-        return new MySQLProvider(universalCredential, maxConnections);
-    }
-
-    /**
-     * Creates provider to mysql
-     *
-     * @param section        {@link JavaPlugin#getConfig()} method
-     * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance from desired support provider
-     */
-    public static DefaultSQLSupport fromConfiguration(@NonNull ConfigurationSection section, int maxConnections) {
-        return from(MysqlCredential.fromConfiguration(section), maxConnections);
-    }
-
-    /**
-     * Create provider to mysql
-     *
-     * @param configuration  {@link Configuration} instance
-     * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance from desired support provider
-     */
-    public static DefaultSQLSupport fromConfiguration(@NonNull Configuration configuration, int maxConnections) {
-        return from(MysqlCredential.fromConfiguration(configuration), maxConnections);
-    }
-
-    /**
-     * Create provider to mysql from bungee configuration from section
-     *
-     * @param configuration  {@link Configuration} instance
-     * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance from desired support provider
-     */
-    public static DefaultSQLSupport fromConfiguration(@NonNull Configuration configuration, @NonNull String path, int maxConnections) {
-        return from(MysqlCredential.fromConfiguration(configuration.getSection(path)), maxConnections);
-    }
-
-    /**
-     * Creates provider to mysql
-     *
-     * @param plugin         {@link JavaPlugin} instance
-     * @param path           configuration section path
-     * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance from desired support provider
-     */
-    public static DefaultSQLSupport fromPlugin(@NonNull Plugin plugin, @NonNull String path, int maxConnections) {
-        return fromConfiguration(Objects.requireNonNull(plugin.getConfig().getConfigurationSection(path)), maxConnections);
-    }
-
-    /**
-     * Creates provider to mysql
-     *
-     * @param hostname       target
-     * @param database       target
-     * @param user           target
-     * @param password       target
-     * @param maxConnections number of max connections (idle connections are divided by 2)
-     * @return instance from desired support provider
-     */
-    public static DefaultSQLSupport from(@NonNull String hostname, @NonNull String database, @NonNull String user, @NonNull String password, int maxConnections) {
-        return from(
-          MysqlCredential.builder()
-            .hostname(hostname)
-            .database(database)
-            .user(user)
-            .password(password)
-            .build(),
-          maxConnections
-        );
-    }
-
-    /**
-     * Creates provider to mysql
-     *
-     * @param universalCredential login credentials from {@link dev.king.universal.shared.credential.UniversalCredential}
-     * @return instance from desired support provider
-     */
-    public static DefaultSQLSupport from(@NonNull UniversalCredential universalCredential) {
-        return from(universalCredential, 4);
+        this.source = poolableProvider.dataSource(credential, maxConnections);
     }
 
     @Override

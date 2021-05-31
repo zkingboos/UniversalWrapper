@@ -5,12 +5,11 @@
 package dev.king.universal.wrapper.mysql.implementation.credential;
 
 import dev.king.universal.shared.credential.UniversalCredential;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import net.md_5.bungee.config.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
@@ -18,10 +17,11 @@ import java.util.Objects;
  * The credential security login to authenticate with mysql
  * Is used to grants secure system.
  */
-@Getter
+@Data
 @Builder
-@RequiredArgsConstructor
 public final class MysqlCredential implements UniversalCredential {
+
+    public static final MysqlCredential EMPTY = new MysqlCredential("", "", "", "");
 
     private final @NonNull String hostname;
     private final @NonNull String database;
@@ -41,6 +41,17 @@ public final class MysqlCredential implements UniversalCredential {
           .user(Objects.requireNonNull(section.getString("user")))
           .password(Objects.requireNonNull(section.getString("password")))
           .build();
+    }
+
+    /**
+     * Creates provider to mysql
+     *
+     * @param plugin {@link JavaPlugin} instance
+     * @param path   configuration section path
+     * @return instance from desired support provider
+     */
+    public static MysqlCredential fromPlugin(@NonNull Plugin plugin, @NonNull String path) {
+        return fromConfiguration(Objects.requireNonNull(plugin.getConfig().getConfigurationSection(path)));
     }
 
     /**

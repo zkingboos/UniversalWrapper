@@ -1,0 +1,3 @@
+main: dev.king.universal.example.TestMysqlBuilder
+version: 1.0
+name: MysqlTestBuilder
