@@ -1,4 +1,6 @@
 plugins {
+    id 'com.github.johnrengelman.shadow' version '6.1.0' //temporary
+    id 'maven' //temporary
     id 'java'
     id 'java-library'
 }
@@ -13,6 +15,9 @@ repositories {
 }
 
 dependencies {
+    implementation project(":sqlreader-extension") //temporary
+    implementation 'com.h2database:h2:1.4.200' //temporary
+
     compileOnly 'org.spigotmc:spigot-api:1.16.2-R0.1-SNAPSHOT'
     implementation project(":mysql-wrapper")
     implementation project(":sql-wrapper")

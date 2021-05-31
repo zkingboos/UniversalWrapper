@@ -1,13 +1,10 @@
-import dev.king.universal.extension.SQLReaderExtension;
 import dev.king.universal.shared.DefaultSQLSupport;
 import dev.king.universal.wrapper.mysql.MySQLProvider;
+import dev.king.universal.wrapper.mysql.implementation.connection.H2PoolableConnection;
 import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import lombok.extern.java.Log;
 import org.junit.After;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,23 +21,25 @@ public class TestInstallSQLReaderExtension {
     @Test
     @BeforeAll
     static void init() {
-        final MysqlCredential credential = new MysqlCredential("localhost:3306", "universalwrapper", "root", "test");
-        defaultSQLSupport = new MySQLProvider(credential, new TestInMemoryPoolableConnection(), 2)
-          .properties()
-          .extensions()
-          .install(SQLReaderExtension.from("sql"))
-          .build();
+        defaultSQLSupport = new MySQLProvider(MysqlCredential.EMPTY, new H2PoolableConnection(), 4);
     }
 
     @Test
     @BeforeEach
     public void testIfHasConnectionAndCreateTableParasite() {
         assertTrue(defaultSQLSupport.hasConnection());
-        assertEquals(0, defaultSQLSupport.update("aleatory.create"));
+        assertEquals(0, defaultSQLSupport.update("create table if not exists teste(king varchar(255))"));
     }
 
     @Test
     @After
+    public void test() {
+        Assertions.assertEquals(1, defaultSQLSupport.update("insert into teste (king) values (?)", "teste"));
+    }
+
+    @Test
+    @After
+    @Disabled
     public void testInsertHalfMillion() {
         final List<String> peopleList = new LinkedList<>();
         for (int i = 0; i < 500000; i++) {
@@ -48,7 +47,7 @@ public class TestInstallSQLReaderExtension {
         }
 
         final int[] result = defaultSQLSupport.batch(
-          "aleatory.insert",
+          "insert into teste (king) values (?)",
           (entity, batchQuery) -> batchQuery.compute(entity)
           , peopleList
         );

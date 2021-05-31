@@ -2,26 +2,29 @@
  * Copyright (c) 2020 yking-projects
  */
 
-package dev.king.universal.wrapper.mysql;
+package dev.king.universal.shared.connection;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import dev.king.universal.shared.credential.UniversalCredential;
+import lombok.Data;
 import lombok.NonNull;
 
 /**
  * The pool of connection, usefully performance to big queries
  */
-public interface PoolableProvider {
+@Data
+public abstract class PoolableProvider<Configuration, DataSource> {
+
+    private final @NonNull String authUri;
+    private final @NonNull String driverClassName;
 
     /**
      * Gets the mysql connection
      *
      * @param credential     instance of {@link dev.king.universal.shared.credential.UniversalCredential} to login or connect into mysql
      * @param maxConnections passed in MysqlProvider constructor
-     * @return returns an {@link com.zaxxer.hikari.HikariDataSource} object, that you can manage it
+     * @return returns an {@link DataSource} manageable object
      */
-    HikariDataSource obtainDataSource(@NonNull UniversalCredential credential, int maxConnections);
+    public abstract DataSource dataSource(@NonNull UniversalCredential credential, int maxConnections);
 
     /**
      * Create hikari object configuration
@@ -29,7 +32,7 @@ public interface PoolableProvider {
      *
      * @param credential     instance of {@link dev.king.universal.shared.credential.UniversalCredential} to login or connect into mysql
      * @param maxConnections passed in MysqlProvider constructor
-     * @return hikari object configuration pool
+     * @return configuration object to manipulate driver
      */
-    HikariConfig getHikariConfiguration(@NonNull UniversalCredential credential, int maxConnections);
+    public abstract Configuration configuration(@NonNull UniversalCredential credential, int maxConnections);
 }

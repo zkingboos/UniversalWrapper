@@ -1,38 +1,23 @@
-/*
- * Copyright (c) 2020 yking-projects
- */
-
-package dev.king.universal.wrapper.mysql.implementation.connection;
+package dev.king.universal.wrapper.mysql;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import dev.king.universal.shared.connection.PoolableProvider;
 import dev.king.universal.shared.credential.UniversalCredential;
-import dev.king.universal.wrapper.mysql.PoolableProvider;
-import lombok.Data;
 import lombok.NonNull;
 
 import java.sql.SQLException;
 
-@Data
-public class DefaultPoolableConnection implements PoolableProvider {
+public abstract class HikariPoolableDriver extends PoolableProvider<HikariConfig, HikariDataSource> {
 
-    private final String authUri;
-    private final String driverClassName;
-
-    public DefaultPoolableConnection(@NonNull String authUri, @NonNull String driverClassName) {
-        this.authUri = authUri;
-        this.driverClassName = driverClassName;
+    public HikariPoolableDriver(@NonNull String authUri, @NonNull String driverClassName) {
+        super(authUri, driverClassName);
     }
 
-    public DefaultPoolableConnection() {
-        this("jdbc:mysql://%s/%s", "com.mysql.jdbc.Driver");
-    }
-
-    public HikariDataSource obtainDataSource(@NonNull UniversalCredential credential, int maxConnections) {
+    public HikariDataSource dataSource(@NonNull UniversalCredential credential, int maxConnections) {
         try {
-            final HikariDataSource dataSource = new HikariDataSource(getHikariConfiguration(credential, maxConnections));
+            final HikariDataSource dataSource = new HikariDataSource(configuration(credential, maxConnections));
             dataSource.setLoginTimeout(3);
-
             return dataSource;
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -41,14 +26,11 @@ public class DefaultPoolableConnection implements PoolableProvider {
     }
 
     @Override
-    public HikariConfig getHikariConfiguration(@NonNull UniversalCredential credential, int maxConnections) {
+    public HikariConfig configuration(@NonNull UniversalCredential credential, int maxConnections) {
         final HikariConfig configuration = new HikariConfig();
-        final String fullHost = String.format(authUri,
-          credential.getHostname(),
-          credential.getDatabase()
-        );
+        final String fullHost = String.format(getAuthUri(), credential.getHostname(), credential.getDatabase());
 
-        configuration.setDriverClassName(driverClassName);
+        configuration.setDriverClassName(getDriverClassName());
         configuration.setJdbcUrl(fullHost);
         configuration.setUsername(credential.getUser());
         configuration.setPassword(credential.getPassword());

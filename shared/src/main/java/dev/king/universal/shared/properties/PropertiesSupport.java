@@ -20,7 +20,7 @@ public class PropertiesSupport {
         return (extensionSupport = new ExtensionSupport(defaultSQLSupport, this));
     }
 
-    public DefaultSQLSupport build() {
+    public DefaultSQLSupport get() {
         return defaultSQLSupport;
     }
 }
