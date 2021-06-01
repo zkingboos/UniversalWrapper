@@ -5,6 +5,8 @@ plugins {
 allprojects {
     group = 'dev.king.universal'
     version = '4.0.6-dev.2'
+
+    // Compile Options
     compileJava.options.encoding = 'UTF-8'
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8

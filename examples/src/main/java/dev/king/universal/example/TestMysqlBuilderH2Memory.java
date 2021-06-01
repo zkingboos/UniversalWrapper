@@ -6,7 +6,11 @@ import dev.king.universal.wrapper.mysql.MySQLProvider;
 import dev.king.universal.wrapper.mysql.implementation.connection.H2PoolableConnection;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class TestMysqlBuilder extends JavaPlugin {
+/**
+ * In this class we use driver from {@link H2PoolableConnection}
+ * Then all the data is stored in memory and right after the program exits it is discarded.
+ */
+public class TestMysqlBuilderH2Memory extends JavaPlugin {
 
     @Override
     public void onEnable() {
