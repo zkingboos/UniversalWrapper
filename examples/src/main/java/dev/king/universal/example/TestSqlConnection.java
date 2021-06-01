@@ -14,7 +14,7 @@ public final class TestSqlConnection {
      * @param args program arguments
      */
     public static void main(String[] args) {
-        final DefaultSQLSupport provider = SQLProvider.from(new File("C:/test.db"));
-        DispatchMethod.dispatchProvider(provider);
+        final DefaultSQLSupport defaultSQLSupport = SQLProvider.from(new File("C:/test.db"));
+        DispatchMethod.dispatchProvider(defaultSQLSupport);
     }
 }

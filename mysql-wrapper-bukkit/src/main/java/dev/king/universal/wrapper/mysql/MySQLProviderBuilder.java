@@ -1,6 +1,7 @@
 package dev.king.universal.wrapper.mysql;
 
 import dev.king.universal.shared.DefaultSQLSupport;
+import dev.king.universal.shared.credential.UniversalCredential;
 import dev.king.universal.wrapper.mysql.implementation.connection.MySQLPoolableConnection;
 import dev.king.universal.wrapper.mysql.implementation.credential.MysqlCredential;
 import lombok.Data;
@@ -15,8 +16,20 @@ import org.bukkit.plugin.Plugin;
 public class MySQLProviderBuilder {
 
     private int maxConnections = 4;
-    private MysqlCredential credential;
+    private UniversalCredential credential;
     private HikariPoolableDriver driver = new MySQLPoolableConnection();
+
+    public MySQLProviderBuilder from(String hostname, String database, String user, String password) {
+        return credential(
+          MysqlCredential
+            .builder()
+            .hostname(hostname)
+            .database(database)
+            .user(user)
+            .password(password)
+            .build()
+        );
+    }
 
     public MySQLProviderBuilder fromConfiguration(@NonNull ConfigurationSection section) {
         this.credential = MysqlCredential.fromConfiguration(section);
