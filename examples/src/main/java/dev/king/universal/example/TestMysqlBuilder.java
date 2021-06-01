@@ -13,7 +13,7 @@ public class TestMysqlBuilder extends JavaPlugin {
         saveDefaultConfig();
         final DefaultSQLSupport defaultSQLSupport = MySQLProvider
           .builder()
-          .fromPlugin(this, "connection.mysql")
+          .fromPlugin(this, "connection.h2")
           .driver(new H2PoolableConnection())
           .build()
           .properties()
