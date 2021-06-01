@@ -21,7 +21,12 @@ public class TestInstallSQLReaderExtension {
     @Test
     @BeforeAll
     static void init() {
-        defaultSQLSupport = new MySQLProvider(MysqlCredential.EMPTY, new H2PoolableConnection(), 4);
+        final MysqlCredential credential = MysqlCredential
+          .builder()
+          .database("universalwrapper")
+          .build();
+
+        defaultSQLSupport = new MySQLProvider(credential, new H2PoolableConnection(), 4);
     }
 
     @Test

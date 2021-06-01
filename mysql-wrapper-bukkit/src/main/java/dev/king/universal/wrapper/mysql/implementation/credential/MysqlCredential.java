@@ -23,10 +23,10 @@ public final class MysqlCredential implements UniversalCredential {
 
     public static final MysqlCredential EMPTY = new MysqlCredential("", "", "", "");
 
-    private final @NonNull String hostname;
-    private final @NonNull String database;
-    private final @NonNull String user;
-    private final @NonNull String password;
+    private final String hostname;
+    private final String database;
+    private final String user;
+    private final String password;
 
     /**
      * Create {@link MysqlCredential} from a {@link org.bukkit.configuration.ConfigurationSection}
