@@ -1,4 +1,5 @@
 plugins {
+    id 'net.minecrell.plugin-yml.bukkit' version '0.4.0' //temporary
     id 'com.github.johnrengelman.shadow' version '6.1.0' //temporary
     id 'maven' //temporary
     id 'java'
@@ -31,3 +32,8 @@ dependencies {
     testImplementation 'org.slf4j:slf4j-simple:1.7.21'
 }
 
+//temporary
+bukkit {
+    main = "dev.king.universal.example.TestMysqlBuilder"
+    author = "zkingboos"
+}
