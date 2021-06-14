@@ -35,7 +35,7 @@ public abstract class HikariPoolableDriver extends PoolableProvider<HikariConfig
         configuration.setUsername(credential.getUser());
         configuration.setPassword(credential.getPassword());
 
-        configuration.setMinimumIdle(maxConnections / 2);
+        configuration.setMinimumIdle(maxConnections);
         configuration.setMaximumPoolSize(maxConnections);
 
         configuration.setAutoCommit(true);
