@@ -21,11 +21,14 @@ Using jitpack:
 
 > Maven
 
+<details>
+<summary>Click here to show the snippet</summary>
+
 ```xml
 <repositories>
     <repository>
         <id>jitpack.io</id>
-	<url>https://jitpack.io</url>
+	    <url>https://jitpack.io</url>
     </repository>
 </repositories>
 
@@ -33,15 +36,15 @@ Using jitpack:
     <!--just for sql wrapper (only compile sql not mysql, as in the previous version) (heavy)-->
     <dependency>
         <groupId>com.github.zkingboos.universalwrapper</groupId>
-	<artifactId>sql-wrapper</artifactId>
-	<version>VERSION</version>
+	    <artifactId>sql-wrapper</artifactId>
+	    <version>VERSION</version>
     </dependency>
 
     <!--just for sql wrapper (only compile sql not mysql, as in the previous version) (light)-->
     <dependency>
         <groupId>com.github.zkingboos.universalwrapper</groupId>
-	<artifactId>sql-wrapper-bukkit</artifactId>
-	<version>VERSION</version>
+	    <artifactId>sql-wrapper-bukkit</artifactId>
+	    <version>VERSION</version>
     </dependency>
     
     <!--just mysql wrapper (heavy)-->
@@ -59,8 +62,12 @@ Using jitpack:
     </dependency>
 </dependencies>
 ```
+</details>
 
 > Gradle
+
+<details>
+<summary>Click here to show the snippet</summary>
 
 ```gradle
 repositories {
@@ -81,20 +88,22 @@ dependencies {
     implementation 'com.github.zkingboos.universalwrapper:mysql-wrapper-bukkit:VERSION'
 }
 ```
+</details>
 
 <!--From https://github.com/LorenzooG/jplank/-->
 
 ## Modules
 
-| Name                                             | Description                                                                |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------- |
-| [shared](shared)                                 | All shared sources for linking the components                                |
-| [sql-wrapper](sql-wrapper)                       | Sql provider compiled with all dependencies                        |
-| [sql-wrapper-bukkit](sql-wrapper-bukkit)         | Sql provider for bukkit applications, only includes the necessary dependencies    |
-| [mysql-wrapper](mysql-wrapper)                   | Mysql provider compiled with all dependencies                    | 
-| [mysql-wrapper-bukkit](mysql-wrapper-bukkit)     | Mysql provider for bukkit applications, only includes the necessary dependencies    |
-| [docs](docs)                                     | The project documentation for github-pages                        |
-| [examples](examples)                             | Examples for the most abstract cases                        |
+| Name                                             | Description                                                                	|
+| ------------------------------------------------ | -------------------------------------------------------------------------- 	|
+| [shared](shared)                                 | All shared sources for linking the components                              	|
+| [sql-wrapper](sql-wrapper)                       | Sql provider compiled with all dependencies                        		|
+| [sql-wrapper-bukkit](sql-wrapper-bukkit)         | Sql provider for bukkit applications, only includes the necessary dependencies    	|
+| [mysql-wrapper](mysql-wrapper)                   | Mysql provider compiled with all dependencies                    			| 
+| [mysql-wrapper-bukkit](mysql-wrapper-bukkit)     | Mysql provider for bukkit applications, only includes the necessary dependencies   |
+| [docs](docs)                                     | The project documentation for github-pages                        			|
+| [examples](examples)                             | Examples for the most abstract cases                        			|
+| [sqlreader-extension](sqlreader-extension)	   | Use sql script files path instead raw sql queries					|
 
 ## Documentation
 
