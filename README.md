@@ -28,7 +28,7 @@ Using jitpack:
 <repositories>
     <repository>
         <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
+        <url>https://jitpack.io</url>
     </repository>
 </repositories>
 
@@ -36,15 +36,15 @@ Using jitpack:
     <!--just for sql wrapper (only compile sql not mysql, as in the previous version) (heavy)-->
     <dependency>
         <groupId>com.github.zkingboos.universalwrapper</groupId>
-	    <artifactId>sql-wrapper</artifactId>
-	    <version>VERSION</version>
+        <artifactId>sql-wrapper</artifactId>
+        <version>VERSION</version>
     </dependency>
 
     <!--just for sql wrapper (only compile sql not mysql, as in the previous version) (light)-->
     <dependency>
         <groupId>com.github.zkingboos.universalwrapper</groupId>
-	    <artifactId>sql-wrapper-bukkit</artifactId>
-	    <version>VERSION</version>
+        <artifactId>sql-wrapper-bukkit</artifactId>
+        <version>VERSION</version>
     </dependency>
     
     <!--just mysql wrapper (heavy)-->
