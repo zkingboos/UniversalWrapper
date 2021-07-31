@@ -2,7 +2,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1abf5f28f9d44d1281619cd726cdd658)](https://www.codacy.com/manual/zkingboos/UniversalWrapper?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zkingboos/UniversalWrapper&amp;utm_campaign=Badge_Grade)
 
-A universal jdbc wrapper, helps you to make queries easier, with the simplicity of the functional interfaces of java!
+A universal jdbc wrapper that helps you to make queries easier, with the simplicity from the functional java interfaces!
 
 ## Summary
 

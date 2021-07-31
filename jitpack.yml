@@ -1,0 +1,6 @@
+jdk:
+  - openjdk8
+
+install:
+  - ./gradlew clean publishToMavenLocal
+  - find ./build -name "*.jar"
