@@ -22,7 +22,7 @@ public final class TestMysqlConnection {
     public static void main(String[] args) {
         final DefaultSQLSupport defaultSQLSupport = MySQLProvider
           .builder()
-          .from("localhost:3306", "universalwrapper", "root", "test")
+          .from("localhost:3306", "universalwrapper", "king", "application_dev")
           .build();
 
         DispatchMethod.dispatchProvider(defaultSQLSupport);

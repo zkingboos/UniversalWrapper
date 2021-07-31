@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Default support provider for SQL & MYSQL drivers.
+ * Default support provider for SQL and MYSQL drivers.
  */
 @Data
 @Accessors(fluent = true)
@@ -33,7 +33,7 @@ public abstract class DefaultSQLSupport implements AutoCloseable {
     /**
      * Connect to mysql server
      *
-     * @return if has a valid connection
+     * @return if it has a valid connection
      */
     public abstract boolean openConnection();
 

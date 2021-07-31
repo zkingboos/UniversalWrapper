@@ -7,5 +7,5 @@ connection:
   mysql:
     hostname: "localhost:3306"
     database: universalwrapper
-    user: root
-    password: test
+    user: king
+    password: application_dev

@@ -3,13 +3,16 @@ plugins {
 }
 
 allprojects {
+
     group = 'dev.king.universal'
-    version = '4.0.6-dev.2'
+    version = '4.0.6-dev.5'
 
     // Compile Options
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
     compileJava.options.encoding = 'UTF-8'
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+
+    // Plugins
+    apply plugin: 'maven-publish'
 
     afterEvaluate {
         repositories {
@@ -18,11 +21,20 @@ allprojects {
         }
 
         dependencies {
-            compileOnly 'org.projectlombok:lombok:1.18.16'
-            annotationProcessor 'org.projectlombok:lombok:1.18.16'
+            def lombok = 'org.projectlombok:lombok:1.18.20'
+            compileOnly lombok
+            annotationProcessor lombok
 
-            testCompileOnly 'org.projectlombok:lombok:1.18.16'
-            testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+            testCompileOnly lombok
+            testAnnotationProcessor lombok
+        }
+
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+                }
+            }
         }
     }
 

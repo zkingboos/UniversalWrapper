@@ -9,8 +9,9 @@ services:
     volumes:
       - universalwrapper_volume:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: test
-      MYSQL_DATABASE: universalwrapper
+      - MYSQL_USER=king
+      - MYSQL_ROOT_PASSWORD=application_dev
+      - MYSQL_DATABASE=universalwrapper
 
 volumes:
   universalwrapper_volume:

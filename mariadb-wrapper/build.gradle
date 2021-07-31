@@ -1,8 +1,7 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
     id 'java'
     id 'java-library'
-    id 'maven'
 }
 
 //group 'dev.king.universal'
@@ -18,6 +17,10 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
 }
 
-test {
-    useJUnitPlatform()
-}
+//publishing {
+//    publications {
+//        maven(MavenPublication) {
+//            from components.java
+//        }
+//    }
+//}
