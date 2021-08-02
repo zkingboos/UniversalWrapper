@@ -27,7 +27,9 @@ jobs:
           gradle-version: wrapper
 
       - name: Setup project version
-        run: echo "::set-env name=PROJECT_VERSION::$(gradle properties --no-daemon --console=plain -q | grep "^version:" | awk '{printf $2}')"
+        run: |
+          export PROJECT_VERSION=$(gradle properties --no-daemon --console=plain -q | grep "^version:" | awk '{printf $2}')
+          echo "PROJECT_VERSION=${PROJECT_VERSION}" >> $GITHUB_ENV
 
       - name: Create Release (${{env.PROJECT_VERSION}})
         id: create_release
